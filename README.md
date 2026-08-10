@@ -26,14 +26,14 @@ Students often know they earned college credit without knowing which course it p
 - locally saved dashboard, plan name, recent changes, and settings;
 - methodology and read-only data workspace;
 - normalized Supabase PostgreSQL schema and RLS policies;
-- 14 academic-engine tests;
+- academic-engine tests covering official score bands, requirement logic, duplicates, and plan changes;
 - responsive desktop, tablet, and mobile design.
 
-## Demo-data warning
+## Academic-data status
 
-The included academic records and tuition values are **illustrative demo data**. They are structurally realistic but are not official university policies. Every page that uses them displays a persistent warning.
+The University of Florida Finance BSBA requirements and supported UF AP/CLEP equivalencies were checked against live official UF catalog sources on August 9, 2026. Each record retains its source URL, checked date, and verification status.
 
-Demo data must be replaced record by record with reviewed official sources before CreditMap is used for real academic planning. Unknown inputs return **Verification required** instead of being guessed.
+FIU, FSU, UCF, and USF pathways and every tuition value remain **illustrative demo data**. Unknown or manually entered transfer inputs return **Verification required** instead of being guessed. See the [verified UF source record](docs/verified-uf-sources.md).
 
 ## Technology stack
 
@@ -162,7 +162,7 @@ Source priority:
 4. Florida state education sources;
 5. College Board, CLEP, IB, or Cambridge official sources.
 
-Each official record should retain its URL, publisher, catalog year, date checked, verification status, and notes. See [academic-data methodology](docs/data-methodology.md).
+Each official record retains its URL, publisher, catalog-year label, date checked, verification status, and notes. See [academic-data methodology](docs/data-methodology.md) and the [verified UF source record](docs/verified-uf-sources.md).
 
 ## Competition demo path
 
@@ -192,8 +192,9 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Current limitations
 
-- academic and tuition records are demo-only;
-- the modeled finance pathway intentionally leaves 89 credits verification-required;
+- only the supported UF Finance and UF exam-credit records are verified; four comparison pathways remain demo-only;
+- manual transfer review, Gen Ed category placement, grade/GPA checks, restricted electives, and career-readiness phases remain verification-required;
+- all tuition values remain illustrative estimates;
 - local demo plans are stored in one browser, not synchronized between devices;
 - cloud authentication and persistence require Supabase project credentials;
 - comparison results demonstrate architecture, not official institutional policy;
@@ -201,8 +202,8 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Future improvements
 
-- replace demo records with reviewed official UF data;
 - add verified programs at FIU, FSU, UCF, and USF;
+- add archived UF catalog years and matriculation-year selection;
 - enable Supabase saved-plan synchronization;
 - add catalog-year selection and archived policies;
 - add community-college transfer and prerequisite data;

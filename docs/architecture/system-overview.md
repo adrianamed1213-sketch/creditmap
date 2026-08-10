@@ -11,7 +11,7 @@ Browser
   -> Next.js pages and React components
        -> plan state and validated mutations
             -> academic calculation engine
-                 -> typed demo data or Supabase PostgreSQL
+                 -> typed verified/demo data or Supabase PostgreSQL
 ```
 
 The competition demo stores one plan in browser storage. The included production schema supports Supabase Auth, PostgreSQL persistence, and Row Level Security when cloud credentials are added.
@@ -54,7 +54,7 @@ The engine takes a complete typed plan and academic dataset. It does not access 
 
 **Why:** Academic data changes separately from calculation rules.
 
-**Where:** `src/data/demo-data.ts` for the competition fixtures and `supabase/migrations` for production.
+**Where:** `src/data/verified-uf-data.ts` for the reviewed UF slice, `src/data/demo-data.ts` for composition and comparison fixtures, and `supabase/migrations` for production.
 
 **Without the boundary:** Updating an academic year would require rewriting application behavior.
 

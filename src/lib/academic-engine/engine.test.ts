@@ -29,12 +29,29 @@ function examCredit(id: string, examId: string, score: number, status: "earned" 
   };
 }
 
+function courseCredit(id: string, courseCode: string, credits = 3) {
+  return {
+    id,
+    kind: "course" as const,
+    sourceType: "DUAL" as const,
+    label: courseCode,
+    institution: "Florida public college",
+    courseCode,
+    courseName: "Test course",
+    credits,
+    grade: "A",
+    status: "earned" as const,
+    createdAt: "2026-08-09T00:00:00.000Z",
+  };
+}
+
 describe("equivalency resolution", () => {
   it("resolves a score at the minimum threshold", () => {
     const credit = examCredit("calc", "ap-calculus-ab", 3);
     const result = resolveExamEquivalency(credit, "uf", academicDataset);
-    expect(result.courses[0]?.courseCode).toBe("UF-D-CALC1");
+    expect(result.courses[0]?.courseCode).toBe("MAC 2311");
     expect(result.acceptedCredits).toBe(4);
+    expect(result.verification).toBe("verified");
   });
 
   it("does not resolve a score below the threshold", () => {
@@ -53,26 +70,41 @@ describe("equivalency resolution", () => {
     expect(low.acceptedCredits).toBe(0);
     expect(high.acceptedCredits).toBe(4);
   });
+
+  it("keeps score-dependent AP equivalencies as separate ranges", () => {
+    const scoreThree = resolveExamEquivalency(
+      examCredit("english-3", "ap-english-language", 3),
+      "uf",
+      academicDataset,
+    );
+    const scoreFour = resolveExamEquivalency(
+      examCredit("english-4", "ap-english-language", 4),
+      "uf",
+      academicDataset,
+    );
+    expect(scoreThree.acceptedCredits).toBe(3);
+    expect(scoreFour.acceptedCredits).toBe(6);
+  });
 });
 
 describe("requirement matching", () => {
   it("matches a specific-course requirement", () => {
     const result = calculatePlan(
-      planWith([examCredit("english", "ap-english-language", 4)]),
+      planWith([examCredit("stats", "ap-statistics", 3)]),
       academicDataset,
     );
-    expect(result.requirementResults.find((item) => item.requirement.id === "uf-writing")?.status).toBe(
+    expect(result.requirementResults.find((item) => item.requirement.id === "uf-finance-statistics")?.status).toBe(
       "completed",
     );
   });
 
   it("supports OR requirements", () => {
     const result = calculatePlan(
-      planWith([examCredit("algebra", "clep-college-algebra", 55)]),
+      planWith([examCredit("calc", "ap-calculus-ab", 3)]),
       academicDataset,
     );
     expect(
-      result.requirementResults.find((item) => item.requirement.id === "uf-quantitative")?.status,
+      result.requirementResults.find((item) => item.requirement.id === "uf-finance-calculus-1")?.status,
     ).toBe("completed");
   });
 
@@ -88,10 +120,10 @@ describe("requirement matching", () => {
       ]),
       academicDataset,
     );
-    expect(oneCourse.requirementResults.find((item) => item.requirement.id === "uf-economics")?.status).toBe(
+    expect(oneCourse.requirementResults.find((item) => item.requirement.id === "uf-finance-economics")?.status).toBe(
       "in_progress",
     );
-    expect(bothCourses.requirementResults.find((item) => item.requirement.id === "uf-economics")?.status).toBe(
+    expect(bothCourses.requirementResults.find((item) => item.requirement.id === "uf-finance-economics")?.status).toBe(
       "completed",
     );
   });
@@ -101,11 +133,11 @@ describe("requirement matching", () => {
       planWith([
         examCredit("psych", "ap-psychology", 4),
         examCredit("soc", "clep-sociology", 55),
-      ]),
+      ], "fiu"),
       academicDataset,
     );
     expect(
-      result.requirementResults.find((item) => item.requirement.id === "uf-social-science")?.status,
+      result.requirementResults.find((item) => item.requirement.id === "fiu-social-science")?.status,
     ).toBe("completed");
   });
 
@@ -114,7 +146,7 @@ describe("requirement matching", () => {
       planWith([examCredit("english", "ap-english-language", 4, "expected")]),
       academicDataset,
     );
-    expect(result.requirementResults.find((item) => item.requirement.id === "uf-writing")?.status).toBe(
+    expect(result.requirementResults.find((item) => item.requirement.id === "uf-gen-ed-composition")?.status).toBe(
       "in_progress",
     );
   });
@@ -134,13 +166,35 @@ describe("allocation and plan changes", () => {
     expect(result.resolvedCredits[1]?.duplicateOfCreditId).toBe("ap-psych");
   });
 
-  it("classifies unused accepted credit as elective credit", () => {
+  it("gives a resolved dual-enrollment course precedence over exam credit", () => {
     const result = calculatePlan(
-      planWith([examCredit("bc", "ap-calculus-bc", 4)]),
+      planWith([
+        examCredit("ap-psych", "ap-psychology", 4),
+        courseCredit("dual-psych", "FIU-D-PSYCH"),
+      ], "fiu"),
       academicDataset,
     );
-    expect(result.acceptedCredits).toBe(8);
-    expect(result.electiveCredits).toBe(4);
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.resolvedCredits[0]?.duplicateOfCreditId).toBe("dual-psych");
+    expect(result.resolvedCredits[1]?.duplicateOfCreditId).toBeUndefined();
+  });
+
+  it("requires university review for manually entered UF transfer courses", () => {
+    const result = calculatePlan(
+      planWith([courseCredit("dual-english", "ENC 1101")]),
+      academicDataset,
+    );
+    expect(result.acceptedCredits).toBe(0);
+    expect(result.resolvedCredits[0]?.verification).toBe("verification_required");
+  });
+
+  it("classifies unused accepted credit as elective credit", () => {
+    const result = calculatePlan(
+      planWith([examCredit("psych", "ap-psychology", 4)]),
+      academicDataset,
+    );
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.electiveCredits).toBe(3);
   });
 
   it("recalculates after deleting a credit", () => {
@@ -166,8 +220,17 @@ describe("allocation and plan changes", () => {
       planWith([examCredit("english", "ap-english-language", 4)]),
       academicDataset,
     );
-    expect(result.applicableCredits).toBe(3);
-    expect(result.progressPercent).toBe(3);
+    expect(result.applicableCredits).toBe(6);
+    expect(result.progressPercent).toBe(5);
+  });
+
+  it("counts the actual credits of a matched variable-credit option", () => {
+    const result = calculatePlan(
+      planWith([examCredit("calc", "ap-calculus-ab", 3)]),
+      academicDataset,
+    );
+    expect(result.applicableCredits).toBe(4);
+    expect(result.acceptedCredits).toBe(result.applicableCredits + result.electiveCredits);
   });
 
   it("generates recommendations tied to remaining requirements", () => {

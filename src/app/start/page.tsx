@@ -12,6 +12,13 @@ export default function StartPage() {
   const router = useRouter();
   const { loadDemo, startBlank } = usePlan();
   const [universityId, setUniversityId] = useState("uf");
+  const selectedProgram = academicDataset.programs.find(
+    (program) => program.universityId === universityId,
+  );
+  const selectedSource = academicDataset.sources.find(
+    (source) => source.id === selectedProgram?.sourceId,
+  );
+  const selectedIsVerified = selectedSource?.verification === "verified";
 
   function beginBlank() {
     startBlank(universityId);
@@ -41,7 +48,7 @@ export default function StartPage() {
               <span className="grid size-9 place-items-center rounded-xl bg-[var(--brand-900)] text-sm font-bold text-white">1</span>
               <div>
                 <h2 className="font-bold text-[var(--brand-950)]">Choose your university</h2>
-                <p className="text-sm text-[var(--text-muted)]">All choices use illustrative competition data.</p>
+                <p className="text-sm text-[var(--text-muted)]">UF uses reviewed official sources; the other choices remain illustrative demos.</p>
               </div>
             </div>
 
@@ -78,9 +85,16 @@ export default function StartPage() {
               <div className="flex items-start gap-3">
                 <University aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" />
                 <div>
-                  <p className="text-sm font-bold text-[var(--brand-950)]">Business / Finance Pathway (Demo)</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-bold text-[var(--brand-950)]">{selectedProgram?.name ?? "Finance pathway"}</p>
+                    <span className={`rounded-full px-2 py-1 text-[0.65rem] font-bold uppercase ${selectedIsVerified ? "bg-[var(--mint-50)] text-[var(--brand-700)]" : "bg-[var(--warning-soft)] text-[var(--warning-strong)]"}`}>
+                      {selectedIsVerified ? "Official sources checked" : "Demo data"}
+                    </span>
+                  </div>
                   <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
-                    One focused pathway keeps the competition demo understandable while the schema supports more majors later.
+                    {selectedIsVerified
+                      ? "UF Finance requirements and supported exam equivalencies link to the live catalog records used by CreditMap."
+                      : "This pathway demonstrates the comparison architecture and must not be used as official academic guidance."}
                   </p>
                 </div>
               </div>

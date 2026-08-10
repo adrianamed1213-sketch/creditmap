@@ -8,7 +8,7 @@ Select **Build my CreditMap**, then **Load competition demo**.
 
 ## 10–25 seconds: dashboard
 
-“This sample student entered five credits. CreditMap resolves them into institution-specific course equivalents, removes overlap, and separates degree-applicable credit from electives.”
+“This sample student entered five credits. The supported UF exams resolve through official catalog records, while the manually entered dual-enrollment course stays verification-required until UF reviews it.”
 
 Point to accepted credits, applicable credits, progress, and the next recommendation.
 
@@ -16,7 +16,7 @@ Point to accepted credits, applicable credits, progress, and the next recommenda
 
 Open **Credits**.
 
-“AP Psychology and CLEP Psychology both resolve to the same illustrative course. The deterministic engine keeps both inputs but counts the course only once.”
+“AP Psychology and CLEP Psychology both resolve to UF's PSY 2012. The deterministic engine keeps both inputs but counts the course only once, following UF's duplicate-credit policy.”
 
 Change AP Calculus from 4 to 2, show the threshold message, then restore it to 4.
 
@@ -26,7 +26,7 @@ Open **Degree map**.
 
 “Requirements support specific courses, one-of choices, all-of sequences, and credit totals. Every completed status includes the course and evidence behind it. Unknown requirements stay verification-required.”
 
-Expand **Calculus for Business**.
+Expand **First calculus requirement** and open its official source.
 
 ## 60–75 seconds: recommendation
 
@@ -38,6 +38,6 @@ Open **Next steps**.
 
 Open **Compare**.
 
-“The same inputs are rerun at five Florida universities. CreditMap does not rank schools; it explains that degree structures differ. The current records are visibly labeled demo data until each policy is verified from an official source.”
+“The same inputs are rerun at five Florida universities. UF is marked as source-verified; the other four cards remain demo data. CreditMap does not rank schools, and it never hides that mixed-data boundary.”
 
 Close with: “CreditMap answers one question: how much of my degree have I already completed, and what should I take next?”

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, BookPlus, Check, Pencil, Search, Trash2, X } from "lucide-react";
+import { AlertTriangle, BookPlus, Check, ExternalLink, Pencil, Search, Trash2, X } from "lucide-react";
 import { type FormEvent, useMemo, useState } from "react";
 import { z } from "zod";
 
@@ -161,12 +161,12 @@ export default function CreditsPage() {
           ) : (
             <form className="mt-6 grid gap-5 sm:grid-cols-2" onSubmit={submitCourse}>
               <label className="sm:col-span-2"><span className="form-label">Institution</span><input className="form-input mt-2" name="institution" placeholder="Example: Florida public college" /></label>
-              <label><span className="form-label">Course code</span><input className="form-input mt-2 uppercase" name="courseCode" placeholder={`${result.university.shortName}-D-COMP`} /></label>
+              <label><span className="form-label">Course code</span><input className="form-input mt-2 uppercase" name="courseCode" placeholder={result.university.id === "uf" ? "ENC 1101" : `${result.university.shortName}-D-COMP`} /></label>
               <label><span className="form-label">Course name</span><input className="form-input mt-2" name="courseName" placeholder="English Composition" /></label>
               <label><span className="form-label">Credits</span><input className="form-input mt-2" defaultValue="3" min="0.5" name="credits" step="0.5" type="number" /></label>
               <label><span className="form-label">Grade</span><input className="form-input mt-2 uppercase" name="grade" placeholder="A" /></label>
               <label className="sm:col-span-2"><span className="form-label">Credit status</span><select className="form-input mt-2" onChange={(event) => setStatus(event.target.value as "earned" | "expected")} value={status}><option value="earned">Earned</option><option value="expected">Expected / in progress</option></select></label>
-              <p className="rounded-xl bg-[var(--warning-soft)] p-3 text-xs leading-5 text-[var(--warning-strong)] sm:col-span-2">For this demo, use a supported illustrative code such as <strong>{result.university.shortName}-D-COMP</strong>. Unknown manual courses correctly return “Verification required.”</p>
+              <p className="rounded-xl bg-[var(--warning-soft)] p-3 text-xs leading-5 text-[var(--warning-strong)] sm:col-span-2">Enter the course exactly as it appears on the college record. A matching code is not enough to confirm transfer credit; manually entered dual-enrollment courses remain <strong>Verification required</strong> until the university reviews them.</p>
               {error && <p className="form-error sm:col-span-2" role="alert"><AlertTriangle aria-hidden="true" className="size-4" />{error}</p>}
               <button className="primary-button sm:col-span-2" type="submit"><Check aria-hidden="true" className="size-4" />Add dual-enrollment course</button>
             </form>
@@ -183,6 +183,9 @@ export default function CreditsPage() {
               const currentCredit = resolved.credit;
               const examMetadata = currentCredit.kind === "exam"
                 ? academicDataset.exams.find((exam) => exam.id === currentCredit.examId)
+                : undefined;
+              const sourceMetadata = resolved.courses[0]
+                ? academicDataset.sources.find((source) => source.id === resolved.courses[0]?.sourceId)
                 : undefined;
               return (
               <article className="rounded-2xl border border-[var(--line)] bg-white p-4 sm:p-5" key={resolved.credit.id}>
@@ -221,9 +224,24 @@ export default function CreditsPage() {
                         <span className="rounded-lg border border-[var(--line)] bg-[var(--surface-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--brand-950)]" key={`${course.courseCode}-${course.sourceCreditId}`}>
                           {course.courseCode} · {course.credits} credits
                         </span>
-                      )) : <span className="text-sm font-semibold text-[var(--warning-strong)]">Verification required</span>}
+                      )) : resolved.verification === "verification_required" ? (
+                        <span className="text-sm font-semibold text-[var(--warning-strong)]">Verification required</span>
+                      ) : (
+                        <span className="text-sm font-semibold text-[var(--text-muted)]">No credit awarded at this score</span>
+                      )}
                     </div>
                     <p className="mt-3 text-xs leading-5 text-[var(--text-muted)]">{resolved.note}</p>
+                    {sourceMetadata && (
+                      <a
+                        className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-700)] hover:underline"
+                        href={sourceMetadata.url}
+                        rel={sourceMetadata.url.startsWith("http") ? "noreferrer" : undefined}
+                        target={sourceMetadata.url.startsWith("http") ? "_blank" : undefined}
+                      >
+                        Source: {sourceMetadata.title}
+                        <ExternalLink aria-hidden="true" className="size-3" />
+                      </a>
+                    )}
                   </div>
                   <button aria-label={`Remove ${resolved.credit.label}`} className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-[var(--line)] px-3 text-sm font-semibold text-[var(--text-muted)] hover:border-red-200 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)]" onClick={() => removeCredit(resolved.credit.id)} type="button">
                     <Trash2 aria-hidden="true" className="size-4" />Remove

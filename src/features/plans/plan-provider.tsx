@@ -13,7 +13,7 @@ import { academicDataset, programForUniversity, samplePlan } from "@/data/demo-d
 import { calculatePlan } from "@/lib/academic-engine/engine";
 import type { PlanResult, StudentCredit, StudentPlan } from "@/lib/academic-engine/types";
 
-const STORAGE_KEY = "creditmap.demo-plan.v1";
+const STORAGE_KEY = "creditmap.local-plan.v2";
 
 type PlanContextValue = {
   plan: StudentPlan;

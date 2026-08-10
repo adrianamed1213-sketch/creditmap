@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookOpenCheck, Database, Scale, ShieldCheck } from "lucide-react";
+import { BookOpenCheck, Database, ExternalLink, Scale, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About and methodology",
@@ -60,6 +60,19 @@ export default function AboutPage() {
             );
           })}
         </div>
+
+        <section className="mt-10 rounded-3xl border border-[var(--mint-200)] bg-[var(--mint-50)] p-6 sm:p-8">
+          <p className="text-xs font-bold tracking-[0.08em] text-[var(--brand-700)] uppercase">First verified pathway</p>
+          <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em] text-[var(--brand-950)]">UF Finance BSBA</h2>
+          <p className="mt-3 max-w-3xl leading-7 text-[var(--text-muted)]">
+            CreditMap checked the live UF Finance, Exam Credit, and General Education catalog pages on August 9, 2026. The live pages do not state a catalog year, so students must still use the policy tied to their matriculation year. FIU, FSU, UCF, USF, and all tuition values remain visibly labeled demo data.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 text-sm font-bold text-[var(--brand-700)]">
+            <a className="inline-flex items-center gap-1.5 hover:underline" href="https://catalog.ufl.edu/UGRD/colleges-schools/UGBUS/FIN_BSBA/" rel="noreferrer" target="_blank">Finance catalog<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+            <a className="inline-flex items-center gap-1.5 hover:underline" href="https://catalog.ufl.edu/UGRD/academic-advising/exam-credit/exam-credit.pdf" rel="noreferrer" target="_blank">Exam credit chart<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+            <a className="inline-flex items-center gap-1.5 hover:underline" href="https://catalog.ufl.edu/UGRD/academic-programs/general-education/" rel="noreferrer" target="_blank">General Education<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+          </div>
+        </section>
 
         <aside className="mt-10 rounded-3xl border border-[var(--line-strong)] bg-[var(--surface-subtle)] p-6 sm:p-8">
           <h2 className="text-xl font-bold text-[var(--brand-950)]">Planning estimate, not an official audit</h2>

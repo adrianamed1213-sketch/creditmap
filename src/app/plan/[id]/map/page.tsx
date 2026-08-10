@@ -42,7 +42,7 @@ export default function DegreeMapPage() {
       <PageHeading
         eyebrow="Your degree map"
         title={`${result.university.shortName} · ${result.program.majorName}`}
-        description="A deterministic estimate of how the credits in this plan connect to the selected illustrative degree pathway."
+        description="A deterministic estimate of how the credits in this plan connect to the selected degree pathway, with verification shown record by record."
         action={
           <label className="w-full sm:w-auto">
             <span className="sr-only">Change university</span>
@@ -79,7 +79,7 @@ export default function DegreeMapPage() {
       {result.duplicateCredits > 0 && (
         <div className="mt-5 flex gap-3 rounded-2xl border border-[var(--warning-line)] bg-[var(--warning-soft)] p-4 text-[var(--warning-strong)]">
           <AlertTriangle aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
-          <div><p className="text-sm font-bold">{result.duplicateCredits} overlapping credits were not counted twice.</p><p className="mt-1 text-xs leading-5">Open Credits to see which inputs resolve to the same illustrative course.</p></div>
+          <div><p className="text-sm font-bold">{result.duplicateCredits} overlapping credits were not counted twice.</p><p className="mt-1 text-xs leading-5">Open Credits to see which inputs resolve to the same course equivalent.</p></div>
         </div>
       )}
 
@@ -110,7 +110,24 @@ export default function DegreeMapPage() {
                     <p className="text-sm leading-6 text-[var(--text-muted)]">{requirementResult.requirement.description}</p>
                     <p className="mt-3 text-sm font-semibold text-[var(--brand-950)]">{requirementResult.explanation}</p>
                     {requirementResult.matchedCourses.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{requirementResult.matchedCourses.map((course) => <span className="rounded-lg bg-[var(--mint-50)] px-2.5 py-1.5 text-xs font-bold text-[var(--brand-800)]" key={`${course.sourceCreditId}-${course.courseCode}`}>{course.courseCode} · {course.credits} credits</span>)}</div>}
-                    <Link className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-700)] hover:underline" href="/about#methodology">Source: CreditMap competition demo dataset <ExternalLink aria-hidden="true" className="size-3" /></Link>
+                    {(() => {
+                      const source = academicDataset.sources.find(
+                        (item) => item.id === requirementResult.requirement.sourceId,
+                      );
+                      if (!source) return null;
+                      const external = source.url.startsWith("http");
+                      return (
+                        <a
+                          className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-700)] hover:underline"
+                          href={source.url}
+                          rel={external ? "noreferrer" : undefined}
+                          target={external ? "_blank" : undefined}
+                        >
+                          Source: {source.title} · checked {source.checkedAt}
+                          <ExternalLink aria-hidden="true" className="size-3" />
+                        </a>
+                      );
+                    })()}
                   </div>
                 </details>
               ))}

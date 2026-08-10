@@ -9,9 +9,15 @@ import type {
   StudentPlan,
   University,
 } from "@/lib/academic-engine/types";
+import {
+  ufEquivalencies,
+  ufFinanceProgram,
+  ufFinanceSource,
+  ufSources,
+} from "./verified-uf-data";
 
 export const DEMO_NOTICE =
-  "Illustrative demo data—not official academic information. Verify all decisions with the university or an academic adviser.";
+  "UF Finance requirements and supported UF exam equivalencies were checked against official live catalog sources on August 9, 2026. Other universities and all tuition values remain illustrative demo data. Confirm final decisions with UF or an academic adviser.";
 
 const demoSource: AcademicSource = {
   id: "creditmap-demo-source",
@@ -32,7 +38,7 @@ export const universities: University[] = [
     location: "Gainesville, Florida",
     tuitionPerCredit: 212.71,
     tuitionAcademicYear: "Demo estimate",
-    sourceId: demoSource.id,
+    sourceId: ufFinanceSource.id,
   },
   {
     id: "fiu",
@@ -83,10 +89,16 @@ export const exams: Exam[] = [
   { id: "ap-english-language", name: "AP English Language and Composition", sourceType: "AP", scoreLabel: "AP score", scoreMin: 1, scoreMax: 5 },
   { id: "ap-microeconomics", name: "AP Microeconomics", sourceType: "AP", scoreLabel: "AP score", scoreMin: 1, scoreMax: 5 },
   { id: "ap-macroeconomics", name: "AP Macroeconomics", sourceType: "AP", scoreLabel: "AP score", scoreMin: 1, scoreMax: 5 },
+  { id: "ap-statistics", name: "AP Statistics", sourceType: "AP", scoreLabel: "AP score", scoreMin: 1, scoreMax: 5 },
+  { id: "ap-us-government", name: "AP United States Government and Politics", sourceType: "AP", scoreLabel: "AP score", scoreMin: 1, scoreMax: 5 },
   { id: "clep-sociology", name: "CLEP Introductory Sociology", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
   { id: "clep-psychology", name: "CLEP Introductory Psychology", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
   { id: "clep-government", name: "CLEP American Government", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
   { id: "clep-college-algebra", name: "CLEP College Algebra", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
+  { id: "clep-calculus", name: "CLEP Calculus", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
+  { id: "clep-college-composition", name: "CLEP College Composition", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
+  { id: "clep-microeconomics", name: "CLEP Principles of Microeconomics", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
+  { id: "clep-macroeconomics", name: "CLEP Principles of Macroeconomics", sourceType: "CLEP", scoreLabel: "CLEP score", scoreMin: 20, scoreMax: 80 },
   { id: "ib-business-management", name: "IB Business Management", sourceType: "IB", scoreLabel: "IB score", scoreMin: 1, scoreMax: 7 },
   { id: "aice-mathematics", name: "AICE Mathematics", sourceType: "AICE", scoreLabel: "Numeric demo score", scoreMin: 1, scoreMax: 5 },
 ];
@@ -237,7 +249,9 @@ function buildProgram(university: University): Program {
   };
 }
 
-export const programs = universities.map(buildProgram);
+const demoUniversities = universities.filter((university) => university.id !== "uf");
+
+export const programs = [ufFinanceProgram, ...demoUniversities.map(buildProgram)];
 
 const baseMappings: Array<{
   examId: string;
@@ -304,10 +318,13 @@ function buildEquivalencies(university: University): ExamEquivalency[] {
   return regular;
 }
 
-export const equivalencies = universities.flatMap(buildEquivalencies);
+export const equivalencies = [
+  ...ufEquivalencies,
+  ...demoUniversities.flatMap(buildEquivalencies),
+];
 
 export const academicDataset: AcademicDataset = {
-  sources: [demoSource],
+  sources: [demoSource, ...ufSources],
   universities,
   programs,
   exams,
@@ -359,10 +376,10 @@ export const sampleCredits: StudentCredit[] = [
     id: "sample-dual-english",
     kind: "course",
     sourceType: "DUAL",
-    label: "English Composition (Demo)",
-    institution: "Florida public college (Demo)",
-    courseCode: "UF-D-COMP",
-    courseName: "Written Composition (Demo)",
+    label: "English Composition (Sample input)",
+    institution: "Florida public college (sample input)",
+    courseCode: "ENC 1101",
+    courseName: "English Composition",
     credits: 3,
     grade: "A",
     status: "earned",
@@ -374,7 +391,7 @@ export const samplePlan: StudentPlan = {
   id: "demo-plan",
   profileName: "Alex's plan",
   universityId: "uf",
-  programId: "uf-business-finance-demo",
+  programId: "uf-finance-bsba-current",
   credits: sampleCredits,
   updatedAt: "2026-08-09T16:00:00.000Z",
   recentChanges: [

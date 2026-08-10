@@ -47,7 +47,7 @@ export function resolveExamEquivalency(
       acceptedCredits: 0,
       verification: possible?.verification ?? "verification_required",
       note: possible
-        ? `Score ${credit.score} does not meet the illustrative threshold of ${possible.minimumScore}.`
+        ? `Score ${credit.score} does not meet the ${possible.verification === "verified" ? "published" : "illustrative"} threshold of ${possible.minimumScore}.`
         : "We could not verify an equivalency for this exam in the selected dataset.",
     };
   }
@@ -64,7 +64,7 @@ export function resolveExamEquivalency(
     courses,
     acceptedCredits: courses.reduce((total, course) => total + course.credits, 0),
     verification: equivalency.verification,
-    note: `Score ${credit.score} meets the illustrative threshold of ${equivalency.minimumScore}.`,
+    note: `Score ${credit.score} meets the ${equivalency.verification === "verified" ? "published" : "illustrative"} threshold of ${equivalency.minimumScore}.`,
   };
 }
 
@@ -100,6 +100,17 @@ function resolveCourseCredit(
     };
   }
 
+  const programSource = dataset.sources.find((source) => source.id === program.sourceId);
+  if (programSource?.verification === "verified") {
+    return {
+      credit,
+      courses: [],
+      acceptedCredits: 0,
+      verification: "verification_required",
+      note: "This course code appears in the selected degree, but CreditMap cannot confirm that this specific dual-enrollment record transfers. UF must review the institution, course equivalency, grade, and the student's catalog year.",
+    };
+  }
+
   const course: ResolvedCourse = {
     courseCode: credit.courseCode.trim().toUpperCase(),
     courseName: credit.courseName,
@@ -128,8 +139,24 @@ export function resolveCredits(
       : resolveCourseCredit(credit, program, dataset),
   );
 
+  const resolutionOrder = initiallyResolved
+    .map((resolved, index) => ({ resolved, index }))
+    .sort((a, b) => {
+      const aTransferPriority = a.resolved.credit.kind === "course" && a.resolved.courses.length > 0 ? 0 : 1;
+      const bTransferPriority = b.resolved.credit.kind === "course" && b.resolved.courses.length > 0 ? 0 : 1;
+      if (aTransferPriority !== bTransferPriority) return aTransferPriority - bTransferPriority;
+
+      if (a.resolved.credit.kind === "exam" && b.resolved.credit.kind === "exam") {
+        const creditDifference = b.resolved.acceptedCredits - a.resolved.acceptedCredits;
+        if (creditDifference !== 0) return creditDifference;
+      }
+
+      return a.index - b.index;
+    });
+
   const firstSourceByCourse = new Map<string, string>();
-  return initiallyResolved.map((resolved) => {
+  const resolvedByCreditId = new Map<string, ResolvedCredit>();
+  resolutionOrder.forEach(({ resolved }) => {
     let firstDuplicate: string | undefined;
     let acceptedCredits = 0;
     const courses = resolved.courses.map((course) => {
@@ -144,7 +171,7 @@ export function resolveCredits(
       return course;
     });
 
-    return {
+    resolvedByCreditId.set(resolved.credit.id, {
       ...resolved,
       courses,
       acceptedCredits,
@@ -152,8 +179,10 @@ export function resolveCredits(
       note: firstDuplicate
         ? `${resolved.note} It overlaps another credit and is not counted twice.`
         : resolved.note,
-    };
+    });
   });
+
+  return initiallyResolved.map((resolved) => resolvedByCreditId.get(resolved.credit.id) ?? resolved);
 }
 
 function requirementPriority(requirement: DegreeRequirement) {
@@ -339,7 +368,7 @@ export function generateRecommendations(
         requirementId: result.requirement.id,
         requirementTitle: result.requirement.title,
         potentialCredits,
-        reason: `${exam.name} may produce ${connectedCourses.map((course) => course.courseCode).join(", ")}, which connects directly to the remaining ${result.requirement.title} requirement in this demo.`,
+        reason: `${exam.name} may produce ${connectedCourses.map((course) => course.courseCode).join(", ")}, which connects directly to the remaining ${result.requirement.title} requirement${equivalency.verification === "verified" ? " using the published UF equivalency" : " in this demo"}.`,
         rank: directness + potentialCredits * 10,
         verification: equivalency.verification,
         sourceId: equivalency.sourceId,
@@ -366,7 +395,19 @@ export function calculatePlan(plan: StudentPlan, dataset: AcademicDataset): Plan
 
   const resolvedCredits = resolveCredits(plan, program, dataset);
   const evaluation = evaluateRequirements(program, plan, resolvedCredits);
-  const applicableCredits = evaluation.results.reduce((total, result) => total + result.appliedCredits, 0);
+  const applicableCourses = new Map<string, ResolvedCourse>();
+  evaluation.results.forEach((result) => {
+    result.matchedCourses.forEach((course) => {
+      applicableCourses.set(
+        `${course.sourceCreditId}:${normalizeCourseCode(course.courseCode)}`,
+        course,
+      );
+    });
+  });
+  const applicableCredits = [...applicableCourses.values()].reduce(
+    (total, course) => total + course.credits,
+    0,
+  );
   const acceptedCredits = resolvedCredits.reduce((total, result) => total + result.acceptedCredits, 0);
   const consumedCredits = new Set(
     evaluation.results.flatMap((result) =>
