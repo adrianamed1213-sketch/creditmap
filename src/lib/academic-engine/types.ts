@@ -73,6 +73,7 @@ export type DegreeRequirement = {
   credits: number;
   order: number;
   rule: RequirementRule;
+  allowsSharedCourse?: boolean;
   verification: VerificationStatus;
   sourceId: string;
 };

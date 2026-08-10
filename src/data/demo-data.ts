@@ -15,9 +15,15 @@ import {
   ufFinanceSource,
   ufSources,
 } from "./verified-uf-data";
+import {
+  fiuEquivalencies,
+  fiuFinanceProgram,
+  fiuFinanceSource,
+  fiuSources,
+} from "./verified-fiu-data";
 
 export const DEMO_NOTICE =
-  "UF Finance requirements and supported UF exam equivalencies were checked against official live catalog sources on August 9, 2026. Other universities and all tuition values remain illustrative demo data. Confirm final decisions with UF or an academic adviser.";
+  "UF and FIU Finance requirements and supported exam equivalencies were checked against official live sources. FSU, UCF, and USF remain on the expansion roadmap, and tuition estimates are withheld pending source verification. Confirm final decisions with the university or an academic adviser.";
 
 const demoSource: AcademicSource = {
   id: "creditmap-demo-source",
@@ -48,7 +54,7 @@ export const universities: University[] = [
     location: "Miami, Florida",
     tuitionPerCredit: 205.57,
     tuitionAcademicYear: "Demo estimate",
-    sourceId: demoSource.id,
+    sourceId: fiuFinanceSource.id,
   },
   {
     id: "fsu",
@@ -249,9 +255,15 @@ function buildProgram(university: University): Program {
   };
 }
 
-const demoUniversities = universities.filter((university) => university.id !== "uf");
+const demoUniversities = universities.filter(
+  (university) => university.id !== "uf" && university.id !== "fiu",
+);
 
-export const programs = [ufFinanceProgram, ...demoUniversities.map(buildProgram)];
+export const programs = [
+  ufFinanceProgram,
+  fiuFinanceProgram,
+  ...demoUniversities.map(buildProgram),
+];
 
 const baseMappings: Array<{
   examId: string;
@@ -274,7 +286,7 @@ const baseMappings: Array<{
   { examId: "aice-mathematics", key: "stats", credits: 3, otherScore: 3 },
 ];
 
-const thresholdOffsets: Record<string, number> = { uf: 0, fiu: -1, fsu: 1, ucf: 0, usf: 0 };
+const thresholdOffsets: Record<string, number> = { fsu: 1, ucf: 0, usf: 0 };
 
 function buildEquivalencies(university: University): ExamEquivalency[] {
   const offset = thresholdOffsets[university.id] ?? 0;
@@ -320,11 +332,12 @@ function buildEquivalencies(university: University): ExamEquivalency[] {
 
 export const equivalencies = [
   ...ufEquivalencies,
+  ...fiuEquivalencies,
   ...demoUniversities.flatMap(buildEquivalencies),
 ];
 
 export const academicDataset: AcademicDataset = {
-  sources: [demoSource, ...ufSources],
+  sources: [demoSource, ...ufSources, ...fiuSources],
   universities,
   programs,
   exams,
@@ -402,3 +415,12 @@ export const samplePlan: StudentPlan = {
 export function programForUniversity(universityId: string) {
   return programs.find((program) => program.universityId === universityId) ?? programs[0];
 }
+
+export const verifiedUniversities = universities.filter((university) => {
+  const program = programForUniversity(university.id);
+  return academicDataset.sources.find((source) => source.id === program.sourceId)?.verification === "verified";
+});
+
+export const upcomingUniversities = universities.filter(
+  (university) => !verifiedUniversities.some((verified) => verified.id === university.id),
+);

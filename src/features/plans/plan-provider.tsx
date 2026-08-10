@@ -9,7 +9,12 @@ import {
   useState,
 } from "react";
 
-import { academicDataset, programForUniversity, samplePlan } from "@/data/demo-data";
+import {
+  academicDataset,
+  programForUniversity,
+  samplePlan,
+  verifiedUniversities,
+} from "@/data/demo-data";
 import { calculatePlan } from "@/lib/academic-engine/engine";
 import type { PlanResult, StudentCredit, StudentPlan } from "@/lib/academic-engine/types";
 
@@ -32,6 +37,27 @@ const PlanContext = createContext<PlanContextValue | null>(null);
 
 function freshDemoPlan(): StudentPlan {
   return JSON.parse(JSON.stringify(samplePlan)) as StudentPlan;
+}
+
+function migrateSavedPlan(saved: StudentPlan): StudentPlan {
+  if (verifiedUniversities.some((university) => university.id === saved.universityId)) {
+    return saved;
+  }
+
+  const fallbackProgram = programForUniversity("uf");
+  return {
+    ...saved,
+    universityId: "uf",
+    programId: fallbackProgram.id,
+    recentChanges: [
+      {
+        id: `change-verified-pathway-${saved.updatedAt}`,
+        description: "Moved this plan to UF because its previous university is still in source review",
+        createdAt: saved.updatedAt,
+      },
+      ...saved.recentChanges,
+    ].slice(0, 8),
+  };
 }
 
 function timestamp() {
@@ -58,7 +84,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     const hydrationTask = window.setTimeout(() => {
       try {
         const saved = window.localStorage.getItem(STORAGE_KEY);
-        if (saved) setPlan(JSON.parse(saved) as StudentPlan);
+        if (saved) setPlan(migrateSavedPlan(JSON.parse(saved) as StudentPlan));
       } catch {
         window.localStorage.removeItem(STORAGE_KEY);
       } finally {

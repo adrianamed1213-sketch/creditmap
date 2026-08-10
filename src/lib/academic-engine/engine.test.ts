@@ -133,11 +133,11 @@ describe("requirement matching", () => {
       planWith([
         examCredit("psych", "ap-psychology", 4),
         examCredit("soc", "clep-sociology", 55),
-      ], "fiu"),
+      ], "fsu"),
       academicDataset,
     );
     expect(
-      result.requirementResults.find((item) => item.requirement.id === "fiu-social-science")?.status,
+      result.requirementResults.find((item) => item.requirement.id === "fsu-social-science")?.status,
     ).toBe("completed");
   });
 
@@ -170,8 +170,8 @@ describe("allocation and plan changes", () => {
     const result = calculatePlan(
       planWith([
         examCredit("ap-psych", "ap-psychology", 4),
-        courseCredit("dual-psych", "FIU-D-PSYCH"),
-      ], "fiu"),
+        courseCredit("dual-psych", "FSU-D-PSYCH"),
+      ], "fsu"),
       academicDataset,
     );
     expect(result.acceptedCredits).toBe(3);
@@ -238,5 +238,77 @@ describe("allocation and plan changes", () => {
     expect(result.recommendations.length).toBeGreaterThan(0);
     expect(result.recommendations.every((item) => item.requirementId.length > 0)).toBe(true);
     expect(result.recommendations[0]?.reason).toContain("requirement");
+  });
+});
+
+describe("FIU verified Finance pathway", () => {
+  it("resolves the published AP Calculus AB equivalency into UCC progress", () => {
+    const result = calculatePlan(
+      planWith([examCredit("fiu-calc", "ap-calculus-ab", 3)], "fiu"),
+      academicDataset,
+    );
+
+    expect(result.program.id).toBe("fiu-finance-bba-current");
+    expect(result.resolvedCredits[0]?.courses[0]?.courseCode).toBe("MAC 2311");
+    expect(result.resolvedCredits[0]?.verification).toBe("verified");
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "fiu-ucc-math-group-one",
+      )?.status,
+    ).toBe("completed");
+    expect(result.applicableCredits).toBe(4);
+  });
+
+  it("shows a shared course in UCC and pre-core without counting its credits twice", () => {
+    const result = calculatePlan(
+      planWith([examCredit("fiu-macro", "ap-macroeconomics", 3)], "fiu"),
+      academicDataset,
+    );
+
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "fiu-pre-core-eco-2013",
+      )?.status,
+    ).toBe("completed");
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "fiu-ucc-social-group-one",
+      )?.status,
+    ).toBe("completed");
+    expect(result.applicableCredits).toBe(3);
+  });
+
+  it("keeps FIU CLEP Sociology as accepted elective credit", () => {
+    const result = calculatePlan(
+      planWith([examCredit("fiu-soc", "clep-sociology", 50)], "fiu"),
+      academicDataset,
+    );
+
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.applicableCredits).toBe(0);
+    expect(result.electiveCredits).toBe(3);
+  });
+
+  it("applies FIU's published duplicate-credit policy", () => {
+    const result = calculatePlan(
+      planWith([
+        examCredit("fiu-ap-psych", "ap-psychology", 3),
+        examCredit("fiu-clep-psych", "clep-psychology", 50),
+      ], "fiu"),
+      academicDataset,
+    );
+
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.duplicateCredits).toBe(3);
+  });
+
+  it("labels FIU recommendations with the correct published institution", () => {
+    const result = calculatePlan(planWith([], "fiu"), academicDataset);
+    const recommendation = result.recommendations.find(
+      (item) => item.exam.id === "clep-calculus",
+    );
+
+    expect(recommendation?.verification).toBe("verified");
+    expect(recommendation?.reason).toContain("published FIU equivalency");
   });
 });

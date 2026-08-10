@@ -54,7 +54,7 @@ The engine takes a complete typed plan and academic dataset. It does not access 
 
 **Why:** Academic data changes separately from calculation rules.
 
-**Where:** `src/data/verified-uf-data.ts` for the reviewed UF slice, `src/data/demo-data.ts` for composition and comparison fixtures, and `supabase/migrations` for production.
+**Where:** `src/data/verified-uf-data.ts` and `src/data/verified-fiu-data.ts` for the reviewed Finance pathways, `src/data/demo-data.ts` for composition and expansion fixtures, and `supabase/migrations` for production.
 
 **Without the boundary:** Updating an academic year would require rewriting application behavior.
 
@@ -84,9 +84,10 @@ Student inputs, equivalencies, and degree requirements are source data. Degree-m
 4. The equivalency resolver produces zero, one, or multiple course equivalents.
 5. Duplicate detection marks overlapping equivalent courses.
 6. The requirement allocator evaluates specific, OR, AND, and credit-count rules in deterministic priority order.
-7. Unused accepted courses become elective-only credit.
-8. Progress is calculated from applicable credits.
-9. Recommendations work backward from incomplete requirements.
-10. Every consuming page receives the same explained result.
+7. A verified shared-course rule can display one course in overlapping university and major requirements while counting its credits only once.
+8. Unused accepted courses become elective-only credit.
+9. Progress is calculated from unique applicable credits.
+10. Recommendations work backward from incomplete requirements.
+11. Every consuming page receives the same explained result.
 
 At no point does an AI model decide whether an academic requirement is satisfied.

@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { DemoBanner } from "@/components/app/demo-banner";
-import { academicDataset } from "@/data/demo-data";
+import {
+  academicDataset,
+  upcomingUniversities,
+  verifiedUniversities,
+} from "@/data/demo-data";
 import { usePlan } from "@/features/plans/plan-provider";
 
 export default function StartPage() {
@@ -48,13 +52,13 @@ export default function StartPage() {
               <span className="grid size-9 place-items-center rounded-xl bg-[var(--brand-900)] text-sm font-bold text-white">1</span>
               <div>
                 <h2 className="font-bold text-[var(--brand-950)]">Choose your university</h2>
-                <p className="text-sm text-[var(--text-muted)]">UF uses reviewed official sources; the other choices remain illustrative demos.</p>
+                <p className="text-sm text-[var(--text-muted)]">UF and FIU use reviewed official Finance and exam-credit sources.</p>
               </div>
             </div>
 
             <fieldset className="mt-6 grid gap-3 sm:grid-cols-2">
               <legend className="sr-only">University</legend>
-              {academicDataset.universities.map((university) => (
+              {verifiedUniversities.map((university) => (
                 <label
                   className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 transition-colors ${
                     universityId === university.id
@@ -81,6 +85,15 @@ export default function StartPage() {
               ))}
             </fieldset>
 
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+              <span className="font-bold text-[var(--brand-950)]">Expansion roadmap:</span>
+              {upcomingUniversities.map((university) => (
+                <span className="rounded-full border border-[var(--line)] bg-[var(--surface-subtle)] px-2.5 py-1" key={university.id}>
+                  {university.shortName} · official data in review
+                </span>
+              ))}
+            </div>
+
             <div className="mt-7 rounded-2xl border border-[var(--line)] bg-[var(--surface-subtle)] p-4">
               <div className="flex items-start gap-3">
                 <University aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" />
@@ -93,7 +106,7 @@ export default function StartPage() {
                   </div>
                   <p className="mt-1 text-xs leading-5 text-[var(--text-muted)]">
                     {selectedIsVerified
-                      ? "UF Finance requirements and supported exam equivalencies link to the live catalog records used by CreditMap."
+                      ? "Finance requirements and supported exam equivalencies link to the live official records used by CreditMap."
                       : "This pathway demonstrates the comparison architecture and must not be used as official academic guidance."}
                   </p>
                 </div>

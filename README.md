@@ -21,7 +21,7 @@ Students often know they earned college credit without knowing which course it p
 - applicable, elective-only, and verification-required classification;
 - visual degree progress grouped by requirement type;
 - explainable recommendations tied to remaining requirements;
-- five-university comparison using the same student inputs;
+- verified UF–FIU comparison using the same student inputs, with three additional universities shown as an expansion roadmap;
 - transparent savings estimate and assumptions;
 - locally saved dashboard, plan name, recent changes, and settings;
 - methodology and read-only data workspace;
@@ -31,9 +31,9 @@ Students often know they earned college credit without knowing which course it p
 
 ## Academic-data status
 
-The University of Florida Finance BSBA requirements and supported UF AP/CLEP equivalencies were checked against live official UF catalog sources on August 9, 2026. Each record retains its source URL, checked date, and verification status.
+The University of Florida Finance BSBA requirements and supported UF AP/CLEP equivalencies were checked against live official UF catalog sources on August 9, 2026. The Florida International University Finance BBA, business curriculum, 2026 University Core Curriculum, and supported AP/CLEP equivalencies were checked against official FIU sources on August 10, 2026. Each record retains its source URL, checked date, and verification status.
 
-FIU, FSU, UCF, and USF pathways and every tuition value remain **illustrative demo data**. Unknown or manually entered transfer inputs return **Verification required** instead of being guessed. See the [verified UF source record](docs/verified-uf-sources.md).
+FSU, UCF, and USF remain expansion fixtures and are excluded from the public planning and numerical comparison flow. Tuition estimates are withheld until their rates and assumptions are verified. Unknown or manually entered transfer inputs return **Verification required** instead of being guessed. See the [verified UF source record](docs/verified-uf-sources.md) and [verified FIU source record](docs/verified-fiu-sources.md).
 
 ## Technology stack
 
@@ -73,7 +73,8 @@ See [system architecture](docs/architecture/system-overview.md) and [database gu
 src/
 ├── app/                         routes, layouts, errors, and pages
 ├── components/                  reusable product and interface components
-├── data/demo-data.ts            visibly labeled competition fixtures
+├── data/demo-data.ts            composition and labeled expansion fixtures
+├── data/verified-fiu-data.ts    reviewed FIU Finance and exam-credit records
 ├── features/plans/              local plan persistence and mutations
 └── lib/
     ├── academic-engine/         deterministic rules and tests
@@ -174,7 +175,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 6. Change a score to demonstrate live recalculation, then restore it.
 7. Open **Degree map** and expand a requirement.
 8. Open **Next steps** to show a requirement-linked recommendation.
-9. Open **Compare** to rerun the same credits at five institutions.
+9. Open **Compare** to rerun the same credits against the verified UF and FIU pathways.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
 
@@ -192,9 +193,9 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Current limitations
 
-- only the supported UF Finance and UF exam-credit records are verified; four comparison pathways remain demo-only;
+- only the supported UF and FIU Finance and exam-credit records are verified; three expansion universities are not yet available for numerical planning;
 - manual transfer review, Gen Ed category placement, grade/GPA checks, restricted electives, and career-readiness phases remain verification-required;
-- all tuition values remain illustrative estimates;
+- tuition savings are withheld until rates and assumptions are verified;
 - local demo plans are stored in one browser, not synchronized between devices;
 - cloud authentication and persistence require Supabase project credentials;
 - comparison results demonstrate architecture, not official institutional policy;
@@ -202,7 +203,7 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Future improvements
 
-- add verified programs at FIU, FSU, UCF, and USF;
+- add verified programs at FSU, UCF, and USF;
 - add archived UF catalog years and matriculation-year selection;
 - enable Supabase saved-plan synchronization;
 - add catalog-year selection and archived policies;

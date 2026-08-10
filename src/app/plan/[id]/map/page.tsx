@@ -18,7 +18,7 @@ import { MetricCard } from "@/components/app/metric-card";
 import { PageHeading } from "@/components/app/page-heading";
 import { ProgressRing } from "@/components/app/progress-ring";
 import { StatusPill } from "@/components/ui/status-pill";
-import { academicDataset } from "@/data/demo-data";
+import { academicDataset, verifiedUniversities } from "@/data/demo-data";
 import { usePlan } from "@/features/plans/plan-provider";
 
 const statusMap = {
@@ -35,8 +35,6 @@ export default function DegreeMapPage() {
     const current = groups.get(requirementResult.requirement.groupLabel) ?? [];
     groups.set(requirementResult.requirement.groupLabel, [...current, requirementResult]);
   });
-  const savingsEstimate = result.applicableCredits * result.university.tuitionPerCredit;
-
   return (
     <section className="page-shell py-10 sm:py-14">
       <PageHeading
@@ -47,7 +45,7 @@ export default function DegreeMapPage() {
           <label className="w-full sm:w-auto">
             <span className="sr-only">Change university</span>
             <select className="form-input min-w-64" onChange={(event) => setUniversity(event.target.value)} value={plan.universityId}>
-              {academicDataset.universities.map((university) => <option key={university.id} value={university.id}>{university.name}</option>)}
+              {verifiedUniversities.map((university) => <option key={university.id} value={university.id}>{university.name}</option>)}
             </select>
           </label>
         }
@@ -140,9 +138,9 @@ export default function DegreeMapPage() {
         <div className="grid gap-6 md:grid-cols-[auto_1fr_auto] md:items-center">
           <div className="grid size-12 place-items-center rounded-2xl bg-white/10"><BadgeDollarSign aria-hidden="true" className="size-6 text-[var(--mint-300)]" /></div>
           <div>
-            <p className="text-xs font-bold tracking-[0.08em] text-[var(--mint-300)] uppercase">Optional savings estimate</p>
-            <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em]">${savingsEstimate.toLocaleString(undefined, { maximumFractionDigits: 0 })} estimated tuition value</h2>
-            <p className="mt-2 text-sm leading-6 text-white/70">Assumption: {result.applicableCredits} applicable credits × ${result.university.tuitionPerCredit.toFixed(2)} illustrative cost per credit. This does not mean tuition will decrease by this amount.</p>
+            <p className="text-xs font-bold tracking-[0.08em] text-[var(--mint-300)] uppercase">Financial estimate</p>
+            <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em]">Waiting for a verified tuition source</h2>
+            <p className="mt-2 text-sm leading-6 text-white/70">CreditMap does not publish a dollar estimate until the institution, academic year, residency assumptions, and eligible charges are sourced. Academic progress remains available without inventing a savings claim.</p>
           </div>
           <Layers3 aria-hidden="true" className="hidden size-16 text-white/10 md:block" />
         </div>

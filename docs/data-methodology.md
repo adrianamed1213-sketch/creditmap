@@ -65,7 +65,7 @@ Demo data is useful for developing the user flow before official records are rea
 
 Demo values must never silently become verified data. A source must be attached and a reviewer must explicitly approve the replacement record.
 
-The current build follows this boundary record by record: the supported UF Finance and UF exam-credit records are verified, while FIU, FSU, UCF, USF, and tuition records remain demo data. See `docs/verified-uf-sources.md` for the reviewed slice and its deliberate limitations.
+The current build follows this boundary record by record: the supported UF and FIU Finance and exam-credit records are verified, while FSU, UCF, and USF remain expansion fixtures. The three unverified institutions are excluded from public numerical planning, and tuition estimates are withheld until their sources and assumptions are verified. See `docs/verified-uf-sources.md` and `docs/verified-fiu-sources.md` for the reviewed slices and their deliberate limitations.
 
 ## User-facing explanation
 

@@ -5,13 +5,18 @@ import { AlertCircle, CheckCircle2, GitCompareArrows, Info, Shapes } from "lucid
 import { DemoBanner } from "@/components/app/demo-banner";
 import { PageHeading } from "@/components/app/page-heading";
 import { ProgressRing } from "@/components/app/progress-ring";
-import { academicDataset, programForUniversity } from "@/data/demo-data";
+import {
+  academicDataset,
+  programForUniversity,
+  upcomingUniversities,
+  verifiedUniversities,
+} from "@/data/demo-data";
 import { usePlan } from "@/features/plans/plan-provider";
 import { calculatePlan } from "@/lib/academic-engine/engine";
 
 export default function ComparePage() {
   const { plan } = usePlan();
-  const comparisons = academicDataset.universities.map((university) => {
+  const comparisons = verifiedUniversities.map((university) => {
     const program = programForUniversity(university.id);
     return calculatePlan({ ...plan, universityId: university.id, programId: program.id }, academicDataset);
   });
@@ -20,7 +25,7 @@ export default function ComparePage() {
     <>
       <DemoBanner />
       <section className="page-shell py-10 sm:py-14">
-        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="UF uses reviewed official records; the other institutions still use illustrative comparison fixtures. More accepted credit does not make one university better." />
+        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="UF and FIU use reviewed official Finance and exam-credit records. More accepted credit does not make one university better." />
         <div className="mt-6 flex gap-3 rounded-2xl border border-[var(--line)] bg-white p-4"><Info aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" /><p className="text-sm leading-6 text-[var(--text-muted)]">Comparison keeps your {plan.credits.length} credit inputs unchanged and reruns the engine for each university. A manually entered university-specific course may require verification elsewhere.</p></div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -48,6 +53,18 @@ export default function ComparePage() {
             );
           })}
         </div>
+
+        <section className="mt-6 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--surface-subtle)] p-5">
+          <h2 className="text-sm font-extrabold text-[var(--brand-950)]">Expansion roadmap</h2>
+          <p className="mt-1 text-sm leading-6 text-[var(--text-muted)]">CreditMap will add a university only after its requirements and equivalencies pass the same source review.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {upcomingUniversities.map((university) => (
+              <span className="rounded-full border border-[var(--line)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--text-muted)]" key={university.id}>
+                {university.shortName} · in review
+              </span>
+            ))}
+          </div>
+        </section>
 
         <div className="mt-8 flex gap-3 rounded-2xl bg-[var(--brand-950)] p-5 text-white"><GitCompareArrows aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--mint-300)]" /><p className="text-sm leading-6 text-white/75"><strong className="text-white">Interpret carefully:</strong> degree structures differ. This view compares how credits map, not academic quality, fit, admissions, or affordability.</p></div>
       </section>

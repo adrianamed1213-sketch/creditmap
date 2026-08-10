@@ -107,7 +107,7 @@ function resolveCourseCredit(
       courses: [],
       acceptedCredits: 0,
       verification: "verification_required",
-      note: "This course code appears in the selected degree, but CreditMap cannot confirm that this specific dual-enrollment record transfers. UF must review the institution, course equivalency, grade, and the student's catalog year.",
+      note: "This course code appears in the selected degree, but CreditMap cannot confirm that this specific dual-enrollment record transfers. The selected university must review the institution, course equivalency, grade, and the student's catalog year.",
     };
   }
 
@@ -214,7 +214,9 @@ function evaluateRequirement(
   }
 
   const unused = availableCourses.filter(
-    (course) => !consumedCourseKeys.has(`${course.sourceCreditId}:${normalizeCourseCode(course.courseCode)}`),
+    (course) =>
+      requirement.allowsSharedCourse ||
+      !consumedCourseKeys.has(`${course.sourceCreditId}:${normalizeCourseCode(course.courseCode)}`),
   );
   const byCodes = (codes: string[]) => {
     const normalized = new Set(codes.map(normalizeCourseCode));
@@ -255,9 +257,11 @@ function evaluateRequirement(
     complete = credits >= rule.requiredCredits;
   }
 
-  matched.forEach((course) =>
-    consumedCourseKeys.add(`${course.sourceCreditId}:${normalizeCourseCode(course.courseCode)}`),
-  );
+  if (!requirement.allowsSharedCourse) {
+    matched.forEach((course) =>
+      consumedCourseKeys.add(`${course.sourceCreditId}:${normalizeCourseCode(course.courseCode)}`),
+    );
+  }
   const satisfiedBy = matched
     .map((course) => creditsById.get(course.sourceCreditId))
     .filter((credit): credit is StudentCredit => Boolean(credit));
@@ -282,7 +286,7 @@ function evaluateRequirement(
     satisfiedBy,
     explanation:
       status === "completed"
-        ? `Satisfied by ${matched.map((course) => course.courseCode).join(", ")}.`
+        ? `Satisfied by ${matched.map((course) => course.courseCode).join(", ")}.${requirement.allowsSharedCourse ? " This course may also satisfy another requirement, but its credits are counted only once." : ""}`
         : status === "in_progress"
           ? `${appliedCredits} of ${requirement.credits} credits are currently connected to this requirement.`
           : "No supported credit currently matches this requirement.",
@@ -335,6 +339,7 @@ export function generateRecommendations(
   );
   const existingCourseCodes = new Set(canonicalCourses.map((course) => normalizeCourseCode(course.courseCode)));
   const candidates: Recommendation[] = [];
+  const university = dataset.universities.find((item) => item.id === plan.universityId);
 
   for (const result of requirementResults) {
     if (result.status === "completed" || result.status === "verification_required") continue;
@@ -368,7 +373,7 @@ export function generateRecommendations(
         requirementId: result.requirement.id,
         requirementTitle: result.requirement.title,
         potentialCredits,
-        reason: `${exam.name} may produce ${connectedCourses.map((course) => course.courseCode).join(", ")}, which connects directly to the remaining ${result.requirement.title} requirement${equivalency.verification === "verified" ? " using the published UF equivalency" : " in this demo"}.`,
+        reason: `${exam.name} may produce ${connectedCourses.map((course) => course.courseCode).join(", ")}, which connects directly to the remaining ${result.requirement.title} requirement${equivalency.verification === "verified" ? ` using the published ${university?.shortName ?? "university"} equivalency` : " in this demo"}.`,
         rank: directness + potentialCredits * 10,
         verification: equivalency.verification,
         sourceId: equivalency.sourceId,

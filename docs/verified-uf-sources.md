@@ -44,4 +44,4 @@ UF states that acceptable dual-enrollment and transfer courses from Florida publ
 
 ## Mixed-data boundary
 
-FIU, FSU, UCF, and USF pathways remain illustrative competition fixtures. All tuition values remain illustrative estimates. The interface labels this boundary on every planning page and on each comparison card.
+FIU now has a separately reviewed Finance pathway documented in `docs/verified-fiu-sources.md`. FSU, UCF, and USF remain expansion fixtures and are excluded from public numerical planning. Tuition estimates are withheld until their sources and assumptions are verified.

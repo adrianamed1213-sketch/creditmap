@@ -38,6 +38,6 @@ Open **Next steps**.
 
 Open **Compare**.
 
-“The same inputs are rerun at five Florida universities. UF is marked as source-verified; the other four cards remain demo data. CreditMap does not rank schools, and it never hides that mixed-data boundary.”
+“The same inputs are rerun through two independently sourced Finance pathways. UF and FIU award and apply these credits differently, while CreditMap counts shared and duplicate courses only once. The next three universities remain off the numerical comparison until their data passes the same review.”
 
 Close with: “CreditMap answers one question: how much of my degree have I already completed, and what should I take next?”
