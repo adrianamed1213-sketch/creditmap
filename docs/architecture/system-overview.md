@@ -48,6 +48,8 @@ The competition demo stores one plan in browser storage. The included production
 
 The engine takes a complete typed plan and academic dataset. It does not access React, browser storage, network APIs, or PostgreSQL directly.
 
+The opportunity simulator is a pure projection service in the same layer. It appends one temporary expected credit, calculates the current and projected plans through the normal engine, and returns the exact credit and requirement deltas. The preview never mutates the saved plan.
+
 ## Data layer
 
 **What it does:** Provides structured universities, programs, exams, equivalencies, sources, requirements, and tuition assumptions.
@@ -88,6 +90,7 @@ Student inputs, equivalencies, and degree requirements are source data. Degree-m
 8. Unused accepted courses become elective-only credit.
 9. Progress is calculated from unique applicable credits.
 10. Recommendations work backward from incomplete requirements.
-11. Every consuming page receives the same explained result.
+11. The opportunity simulator can rerun the resolution and allocation steps with one temporary exam and report the before-and-after delta.
+12. Every consuming page receives the same explained result.
 
 At no point does an AI model decide whether an academic requirement is satisfied.

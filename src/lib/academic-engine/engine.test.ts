@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { academicDataset, programForUniversity, samplePlan } from "../../data/demo-data";
 
 import { calculatePlan, resolveExamEquivalency } from "./engine";
+import { simulateExamOpportunity } from "./simulator";
 import type { StudentCredit, StudentPlan } from "./types";
 
 function planWith(credits: StudentCredit[], universityId = "uf"): StudentPlan {
@@ -310,5 +311,52 @@ describe("FIU verified Finance pathway", () => {
 
     expect(recommendation?.verification).toBe("verified");
     expect(recommendation?.reason).toContain("published FIU equivalency");
+  });
+});
+
+describe("opportunity simulator", () => {
+  it("projects a verified exam through equivalency and overlapping requirements", () => {
+    const projection = simulateExamOpportunity(
+      planWith([], "fiu"),
+      "clep-calculus",
+      50,
+      academicDataset,
+    );
+
+    expect(projection.resolution.verification).toBe("verified");
+    expect(projection.resolution.courses[0]?.courseCode).toBe("MAC 2233");
+    expect(projection.deltas.applicableCredits).toBe(3);
+    expect(projection.deltas.progressPercent).toBe(3);
+    expect(
+      projection.impactedRequirements.map((item) => item.requirement.id),
+    ).toEqual(expect.arrayContaining(["fiu-ucc-math-group-two", "fiu-pre-core-mac-2233"]));
+  });
+
+  it("shows a duplicate conflict without inflating projected credit", () => {
+    const projection = simulateExamOpportunity(
+      planWith([examCredit("existing-psych", "ap-psychology", 3)], "fiu"),
+      "clep-psychology",
+      50,
+      academicDataset,
+    );
+
+    expect(projection.resolution.duplicateOfCreditId).toBe("existing-psych");
+    expect(projection.deltas.acceptedCredits).toBe(0);
+    expect(projection.deltas.applicableCredits).toBe(0);
+    expect(projection.projected.duplicateCredits).toBe(3);
+  });
+
+  it("shows no projected change below a published threshold", () => {
+    const projection = simulateExamOpportunity(
+      planWith([], "fiu"),
+      "clep-calculus",
+      49,
+      academicDataset,
+    );
+
+    expect(projection.resolution.courses).toHaveLength(0);
+    expect(projection.deltas.acceptedCredits).toBe(0);
+    expect(projection.deltas.applicableCredits).toBe(0);
+    expect(projection.impactedRequirements).toHaveLength(0);
   });
 });

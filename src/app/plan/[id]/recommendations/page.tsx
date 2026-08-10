@@ -4,6 +4,7 @@ import { ArrowRight, BookOpenCheck, ExternalLink, Lightbulb, SearchX, ShieldChec
 import Link from "next/link";
 
 import { EmptyState } from "@/components/app/empty-state";
+import { OpportunitySimulator } from "@/components/app/opportunity-simulator";
 import { PageHeading } from "@/components/app/page-heading";
 import { academicDataset } from "@/data/demo-data";
 import { usePlan } from "@/features/plans/plan-provider";
@@ -13,12 +14,14 @@ export default function RecommendationsPage() {
 
   return (
     <section className="page-shell py-10 sm:py-14">
-      <PageHeading eyebrow="What should I take next?" title="Options connected to what remains" description="CreditMap ranks only supported options that produce a course used by an incomplete modeled requirement. Each option keeps its own verification state." />
+      <PageHeading eyebrow="What should I take next?" title="See what one more credit could change" description="Preview a score through CreditMap's equivalency, duplicate, and degree-rule engine, then inspect the requirement-linked options behind the result." />
 
       <div className="mt-7 flex gap-3 rounded-2xl border border-[var(--mint-200)] bg-[var(--mint-50)] p-4">
         <ShieldCheck aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" />
         <p className="text-sm leading-6 text-[var(--text-muted)]"><strong className="text-[var(--brand-950)]">Explainable ranking:</strong> direct requirement matches rank first, then potential applicable credits. Difficulty is not estimated.</p>
       </div>
+
+      {result.recommendations.length > 0 && <OpportunitySimulator />}
 
       {result.recommendations.length === 0 ? (
         <div className="mt-8"><EmptyState icon={SearchX} title="No direct options found" description="We haven’t found another supported exam that directly matches your remaining modeled requirements." /></div>

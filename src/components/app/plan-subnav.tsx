@@ -1,6 +1,6 @@
 "use client";
 
-import { BookPlus, Compass, Lightbulb, Map } from "lucide-react";
+import { BookPlus, Compass, FlaskConical, Map } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,7 +10,7 @@ const items = [
   { href: "/dashboard", label: "Overview", mobileLabel: "Overview", icon: Compass },
   { href: "/plan/demo-plan/credits", label: "Credits", mobileLabel: "Credits", icon: BookPlus },
   { href: "/plan/demo-plan/map", label: "Degree map", mobileLabel: "Map", icon: Map },
-  { href: "/plan/demo-plan/recommendations", label: "Next steps", mobileLabel: "Next", icon: Lightbulb },
+  { href: "/plan/demo-plan/recommendations", label: "Opportunities", mobileLabel: "Simulate", icon: FlaskConical },
 ] as const;
 
 export function PlanSubnav() {

@@ -28,16 +28,18 @@ Open **Degree map**.
 
 Expand **First calculus requirement** and open its official source.
 
-## 60–75 seconds: recommendation
+## 60–78 seconds: opportunity simulator
 
-Open **Next steps**.
+Open **Opportunities**.
 
-“Recommendations work backward from remaining requirements. An exam is not suggested merely because the university accepts it—it must connect to something the student still needs.”
+“Recommendations work backward from what remains. Before changing my plan, I can test a score and see its official equivalent, projected progress, affected requirements, and any duplicate conflict. The preview uses the same deterministic engine as the degree map.”
 
-## 75–90 seconds: comparison and close
+Change the hypothetical score below and back to the published minimum, then point to the three-step calculation trace.
+
+## 78–90 seconds: comparison and close
 
 Open **Compare**.
 
-“The same inputs are rerun through two independently sourced Finance pathways. UF and FIU award and apply these credits differently, while CreditMap counts shared and duplicate courses only once. The next three universities remain off the numerical comparison until their data passes the same review.”
+“The same inputs are rerun through two independently sourced Finance pathways. UF and FIU award and apply these credits differently, while CreditMap counts shared and duplicate courses only once.”
 
-Close with: “CreditMap answers one question: how much of my degree have I already completed, and what should I take next?”
+Close with: “CreditMap turns scattered credit policies into one answer students can inspect, test, and act on.”

@@ -33,7 +33,7 @@ export default function DashboardPage() {
 
           <section className="rounded-3xl border border-[var(--line)] bg-white p-6">
             <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-[var(--mint-50)] text-[var(--brand-700)]"><Lightbulb aria-hidden="true" className="size-5" /></div><div><p className="text-xs font-bold tracking-[0.06em] text-[var(--brand-700)] uppercase">Recommended next</p><h2 className="font-bold text-[var(--brand-950)]">{result.recommendations[0]?.exam.name ?? "No direct match found"}</h2></div></div>
-            {result.recommendations[0] && <><p className="mt-4 text-sm leading-6 text-[var(--text-muted)]">Could connect {result.recommendations[0].potentialCredits} credits to <strong className="text-[var(--brand-950)]">{result.recommendations[0].requirementTitle}</strong>.</p><Link className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--brand-700)] hover:underline" href="/plan/demo-plan/recommendations">See why it was recommended<ArrowRight aria-hidden="true" className="size-4" /></Link></>}
+            {result.recommendations[0] && <><p className="mt-4 text-sm leading-6 text-[var(--text-muted)]">Could connect {result.recommendations[0].potentialCredits} credits to <strong className="text-[var(--brand-950)]">{result.recommendations[0].requirementTitle}</strong>.</p><Link className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--brand-700)] hover:underline" href="/plan/demo-plan/recommendations">Simulate this opportunity<ArrowRight aria-hidden="true" className="size-4" /></Link></>}
           </section>
         </div>
 

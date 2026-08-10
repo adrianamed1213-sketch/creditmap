@@ -21,6 +21,7 @@ Students often know they earned college credit without knowing which course it p
 - applicable, elective-only, and verification-required classification;
 - visual degree progress grouped by requirement type;
 - explainable recommendations tied to remaining requirements;
+- interactive opportunity simulator with score thresholds, before-and-after progress, duplicate warnings, and an auditable calculation trace;
 - verified UF–FIU comparison using the same student inputs, with three additional universities shown as an expansion roadmap;
 - transparent savings estimate and assumptions;
 - locally saved dashboard, plan name, recent changes, and settings;
@@ -131,7 +132,7 @@ Run every check with:
 pnpm check
 ```
 
-The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, and recommendations.
+The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, and opportunity projections.
 
 ## Environment variables
 
@@ -174,7 +175,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 5. Open **Credits** and point out the psychology duplicate.
 6. Change a score to demonstrate live recalculation, then restore it.
 7. Open **Degree map** and expand a requirement.
-8. Open **Next steps** to show a requirement-linked recommendation.
+8. Open **Opportunities**, change a hypothetical score, and show the official equivalent, projected progress, and duplicate-safe calculation trace.
 9. Open **Compare** to rerun the same credits against the verified UF and FIU pathways.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
@@ -187,6 +188,7 @@ Recommended release screenshots:
 - dashboard summary;
 - expanded degree requirement;
 - duplicate-credit warning;
+- opportunity simulator showing a before-and-after projection;
 - comparison page on desktop and mobile.
 
 Final screenshots should be captured after the official academic dataset and deployed URL are ready.
