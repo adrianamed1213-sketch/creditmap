@@ -40,6 +40,6 @@ Change the hypothetical score below and back to the published minimum, then poin
 
 Open **Compare**.
 
-“The same inputs are rerun through two independently sourced Finance pathways. UF and FIU award and apply these credits differently, while CreditMap counts shared and duplicate courses only once.”
+“The same inputs are rerun through two independently sourced Finance pathways. The portability matrix explains every row: AP Psychology is elective-only in the supported UF map but applies to FIU’s core, while the duplicate CLEP credit is suppressed at both.”
 
 Close with: “CreditMap turns scattered credit policies into one answer students can inspect, test, and act on.”

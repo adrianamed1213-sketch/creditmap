@@ -23,6 +23,7 @@ Students often know they earned college credit without knowing which course it p
 - explainable recommendations tied to remaining requirements;
 - interactive opportunity simulator with score thresholds, before-and-after progress, duplicate warnings, and an auditable calculation trace;
 - verified UF–FIU comparison using the same student inputs, with three additional universities shown as an expansion roadmap;
+- credit-by-credit portability matrix showing university equivalents, degree use, duplicate handling, explanations, and official evidence;
 - transparent savings estimate and assumptions;
 - locally saved dashboard, plan name, recent changes, and settings;
 - methodology and read-only data workspace;
@@ -132,7 +133,7 @@ Run every check with:
 pnpm check
 ```
 
-The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, and opportunity projections.
+The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, and credit portability outcomes.
 
 ## Environment variables
 
@@ -176,7 +177,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 6. Change a score to demonstrate live recalculation, then restore it.
 7. Open **Degree map** and expand a requirement.
 8. Open **Opportunities**, change a hypothetical score, and show the official equivalent, projected progress, and duplicate-safe calculation trace.
-9. Open **Compare** to rerun the same credits against the verified UF and FIU pathways.
+9. Open **Compare** and trace AP Psychology across the UF–FIU portability matrix to show why the same credit can be elective at one university and degree-applicable at another.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
 
@@ -189,7 +190,7 @@ Recommended release screenshots:
 - expanded degree requirement;
 - duplicate-credit warning;
 - opportunity simulator showing a before-and-after projection;
-- comparison page on desktop and mobile.
+- credit portability matrix on desktop and mobile.
 
 Final screenshots should be captured after the official academic dataset and deployed URL are ready.
 

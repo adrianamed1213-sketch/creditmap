@@ -2,6 +2,7 @@
 
 import { AlertCircle, CheckCircle2, GitCompareArrows, Info, Shapes } from "lucide-react";
 
+import { CreditPortabilityMatrix } from "@/components/app/credit-portability-matrix";
 import { DemoBanner } from "@/components/app/demo-banner";
 import { PageHeading } from "@/components/app/page-heading";
 import { ProgressRing } from "@/components/app/progress-ring";
@@ -12,20 +13,25 @@ import {
   verifiedUniversities,
 } from "@/data/demo-data";
 import { usePlan } from "@/features/plans/plan-provider";
-import { calculatePlan } from "@/lib/academic-engine/engine";
+import { buildCreditPortabilityComparison } from "@/lib/academic-engine/comparison";
 
 export default function ComparePage() {
   const { plan } = usePlan();
-  const comparisons = verifiedUniversities.map((university) => {
-    const program = programForUniversity(university.id);
-    return calculatePlan({ ...plan, universityId: university.id, programId: program.id }, academicDataset);
-  });
+  const portability = buildCreditPortabilityComparison(
+    plan,
+    verifiedUniversities.map((university) => ({
+      universityId: university.id,
+      programId: programForUniversity(university.id).id,
+    })),
+    academicDataset,
+  );
+  const comparisons = portability.results;
 
   return (
     <>
       <DemoBanner />
       <section className="page-shell py-10 sm:py-14">
-        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="UF and FIU use reviewed official Finance and exam-credit records. More accepted credit does not make one university better." />
+        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="Compare the totals, then trace every credit through UF and FIU using reviewed official Finance and exam-credit records." />
         <div className="mt-6 flex gap-3 rounded-2xl border border-[var(--line)] bg-white p-4"><Info aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" /><p className="text-sm leading-6 text-[var(--text-muted)]">Comparison keeps your {plan.credits.length} credit inputs unchanged and reruns the engine for each university. A manually entered university-specific course may require verification elsewhere.</p></div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -53,6 +59,11 @@ export default function ComparePage() {
             );
           })}
         </div>
+
+        <CreditPortabilityMatrix
+          comparison={portability}
+          sources={academicDataset.sources}
+        />
 
         <section className="mt-6 rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--surface-subtle)] p-5">
           <h2 className="text-sm font-extrabold text-[var(--brand-950)]">Expansion roadmap</h2>

@@ -50,6 +50,8 @@ The engine takes a complete typed plan and academic dataset. It does not access 
 
 The opportunity simulator is a pure projection service in the same layer. It appends one temporary expected credit, calculates the current and projected plans through the normal engine, and returns the exact credit and requirement deltas. The preview never mutates the saved plan.
 
+The portability comparison service reruns the unchanged credit inputs against each selected university and program. It derives a per-credit outcome from each complete plan result—applicable, mixed, elective-only, duplicate, unsupported, or verification-required—so comparison logic remains outside the interface.
+
 ## Data layer
 
 **What it does:** Provides structured universities, programs, exams, equivalencies, sources, requirements, and tuition assumptions.
