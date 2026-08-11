@@ -81,7 +81,7 @@ export default function HomePage() {
           <div>
             <p className="text-xs font-bold tracking-[0.08em] text-[var(--brand-700)] uppercase">Competition demo</p>
             <h2 className="mt-1 text-xl font-extrabold text-[var(--brand-950)]">See the complete idea in about 60 seconds.</h2>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">Load five sample credits, find the duplicate, inspect progress, get a recommendation, and compare colleges.</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">Load five sample credits, find the duplicate, inspect progress, and test one future exam across three colleges.</p>
           </div>
           <ButtonLink className="shrink-0" href="/start" variant="secondary">Try the guided demo<ArrowRight aria-hidden="true" className="size-4" /></ButtonLink>
         </div>

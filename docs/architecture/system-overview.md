@@ -50,6 +50,8 @@ The engine takes a complete typed plan and academic dataset. It does not access 
 
 The opportunity simulator is a pure projection service in the same layer. It appends one temporary expected credit, calculates the current and projected plans through the normal engine, and returns the exact credit and requirement deltas. The preview never mutates the saved plan.
 
+The portable opportunity service applies that same temporary exam to every selected verified program. It reports institution-specific equivalents, duplicates, applicable and elective deltas, requirement impacts, and the supporting source without ranking the colleges themselves.
+
 The portability comparison service reruns the unchanged credit inputs against each selected university and program. It derives a per-credit outcome from each complete plan result—applicable, mixed, elective-only, duplicate, unsupported, or verification-required—so comparison logic remains outside the interface.
 
 The plan-brief service converts one explained result into a stable report model. It aggregates per-credit outcomes, warnings, requirements, the next opportunity, and the exact source records used; the print interface only formats that model and never recalculates academic rules.
@@ -95,6 +97,7 @@ Student inputs, equivalencies, and degree requirements are source data. Degree-m
 9. Progress is calculated from unique applicable credits.
 10. Recommendations work backward from incomplete requirements.
 11. The opportunity simulator can rerun the resolution and allocation steps with one temporary exam and report the before-and-after delta.
-12. Every consuming page receives the same explained result.
+12. The portable opportunity service can repeat that projection across all verified programs without changing the saved plan.
+13. Every consuming page receives the same explained result.
 
 At no point does an AI model decide whether an academic requirement is satisfied.

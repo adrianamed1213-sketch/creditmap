@@ -36,13 +36,13 @@ Open **Opportunities**.
 
 Change the hypothetical score below and back to the published minimum, then point to the three-step calculation trace.
 
-## 74–84 seconds: comparison
+## 74–86 seconds: comparison
 
 Open **Compare**.
 
-“The same inputs are rerun through three independently sourced Finance pathways. The portability matrix explains every row: AP Psychology is elective-only in the supported UF map but applies to FIU and UCF general education, while the duplicate CLEP credit is suppressed everywhere.”
+“Before choosing a college, I can test one future exam across all three pathways. AP Macroeconomics adds four modeled degree credits at UF and three at FIU and UCF. The portability matrix then explains why existing AP Psychology is elective-only at UF but applies to FIU and UCF general education.”
 
-## 84–90 seconds: counselor handoff and close
+## 86–90 seconds: counselor handoff and close
 
 Open **Plan brief**.
 

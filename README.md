@@ -23,6 +23,7 @@ Students often know they earned college credit without knowing which course it p
 - explainable recommendations tied to remaining requirements;
 - interactive opportunity simulator with score thresholds, before-and-after progress, duplicate warnings, and an auditable calculation trace;
 - verified UF–FIU–UCF comparison using the same student inputs, with two additional universities shown as an expansion roadmap;
+- portable opportunity lab that projects one hypothetical AP/CLEP score across every verified university and explains the different degree-credit gains;
 - credit-by-credit portability matrix showing university equivalents, degree use, duplicate handling, explanations, and official evidence;
 - counselor-ready plan brief that can be printed or saved as a PDF with outcomes, warnings, next steps, requirements, and dated sources;
 - transparent savings estimate and assumptions;
@@ -135,7 +136,7 @@ Run every check with:
 pnpm check
 ```
 
-The test suite covers score thresholds, score changes, specific/OR/AND/alternative-group/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, credit portability outcomes, and plan-brief generation.
+The test suite covers score thresholds, score changes, specific/OR/AND/alternative-group/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, single- and multi-university opportunity projections, credit portability outcomes, and plan-brief generation.
 
 ## Environment variables
 
@@ -179,7 +180,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 6. Change a score to demonstrate live recalculation, then restore it.
 7. Open **Degree map** and expand a requirement.
 8. Open **Opportunities**, change a hypothetical score, and show the official equivalent, projected progress, and duplicate-safe calculation trace.
-9. Open **Compare** and trace AP Psychology across the UF–FIU–UCF portability matrix to show why the same credit can be elective at one university and degree-applicable at another.
+9. Open **Compare**, test AP Macroeconomics in the portable opportunity lab, then trace AP Psychology across the UF–FIU–UCF matrix to show why one credit can have different values and degree uses.
 10. Open **Plan brief** to show the printable counselor handoff with warnings and dated evidence.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
@@ -193,6 +194,7 @@ Recommended release screenshots:
 - expanded degree requirement;
 - duplicate-credit warning;
 - opportunity simulator showing a before-and-after projection;
+- portable opportunity lab comparing one future exam across all three universities;
 - credit portability matrix on desktop and mobile.
 - printable plan brief preview.
 
