@@ -5,7 +5,7 @@ import { product } from "@/lib/product";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--line)] bg-white">
+    <footer className="print-hidden border-t border-[var(--line)] bg-white">
       <div className="page-shell grid gap-8 py-10 md:grid-cols-[1fr_auto] md:items-end">
         <div className="max-w-2xl space-y-4">
           <CreditMapLogo />

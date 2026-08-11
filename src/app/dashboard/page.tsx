@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BookPlus, CheckCircle2, Clock3, GitCompareArrows, GraduationCap, Lightbulb, Map, Shapes } from "lucide-react";
+import { ArrowRight, BookPlus, CheckCircle2, Clock3, FileText, GitCompareArrows, GraduationCap, Lightbulb, Map, Shapes } from "lucide-react";
 import Link from "next/link";
 
 import { DemoBanner } from "@/components/app/demo-banner";
@@ -56,6 +56,7 @@ export default function DashboardPage() {
             <div className="mt-4 grid gap-2">
               <Link className="dashboard-action" href="/plan/demo-plan/credits"><BookPlus aria-hidden="true" className="size-5" /><span><strong>Add or edit credit</strong><small>Update scores and courses</small></span><ArrowRight aria-hidden="true" className="ml-auto size-4" /></Link>
               <Link className="dashboard-action" href="/plan/demo-plan/map"><Map aria-hidden="true" className="size-5" /><span><strong>View degree map</strong><small>Inspect every requirement</small></span><ArrowRight aria-hidden="true" className="ml-auto size-4" /></Link>
+              <Link className="dashboard-action" href="/plan/demo-plan/brief"><FileText aria-hidden="true" className="size-5" /><span><strong>Open plan brief</strong><small>Print or save a counselor-ready summary</small></span><ArrowRight aria-hidden="true" className="ml-auto size-4" /></Link>
               <Link className="dashboard-action" href="/compare"><GitCompareArrows aria-hidden="true" className="size-5" /><span><strong>Compare colleges</strong><small>Reuse the same credits</small></span><ArrowRight aria-hidden="true" className="ml-auto size-4" /></Link>
             </div>
           </section>

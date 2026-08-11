@@ -52,6 +52,8 @@ The opportunity simulator is a pure projection service in the same layer. It app
 
 The portability comparison service reruns the unchanged credit inputs against each selected university and program. It derives a per-credit outcome from each complete plan result—applicable, mixed, elective-only, duplicate, unsupported, or verification-required—so comparison logic remains outside the interface.
 
+The plan-brief service converts one explained result into a stable report model. It aggregates per-credit outcomes, warnings, requirements, the next opportunity, and the exact source records used; the print interface only formats that model and never recalculates academic rules.
+
 ## Data layer
 
 **What it does:** Provides structured universities, programs, exams, equivalencies, sources, requirements, and tuition assumptions.

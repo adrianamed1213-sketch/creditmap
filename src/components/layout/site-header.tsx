@@ -24,7 +24,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color:rgba(250,252,251,0.92)] backdrop-blur-md">
+    <header className="print-hidden sticky top-0 z-50 border-b border-[var(--line)] bg-[color:rgba(250,252,251,0.92)] backdrop-blur-md">
       <div className="page-shell flex h-[4.5rem] items-center justify-between gap-5">
         <CreditMapLogo />
 

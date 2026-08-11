@@ -1,6 +1,6 @@
 "use client";
 
-import { BookPlus, Compass, FlaskConical, Map } from "lucide-react";
+import { BookPlus, Compass, FileText, FlaskConical, Map } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,14 +11,15 @@ const items = [
   { href: "/plan/demo-plan/credits", label: "Credits", mobileLabel: "Credits", icon: BookPlus },
   { href: "/plan/demo-plan/map", label: "Degree map", mobileLabel: "Map", icon: Map },
   { href: "/plan/demo-plan/recommendations", label: "Opportunities", mobileLabel: "Simulate", icon: FlaskConical },
+  { href: "/plan/demo-plan/brief", label: "Plan brief", mobileLabel: "Brief", icon: FileText },
 ] as const;
 
 export function PlanSubnav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-[var(--line)] bg-white" aria-label="Plan navigation">
-      <div className="page-shell grid grid-cols-4 gap-1 py-2 sm:flex">
+    <nav className="print-hidden border-b border-[var(--line)] bg-white" aria-label="Plan navigation">
+      <div className="page-shell grid grid-cols-5 gap-1 py-2 sm:flex">
         {items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href;

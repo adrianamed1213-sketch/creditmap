@@ -74,7 +74,7 @@ function classifyOutcome(
   return "no_match";
 }
 
-function outcomeForCredit(
+export function creditOutcomeForResult(
   credit: StudentCredit,
   result: PlanResult,
   dataset: AcademicDataset,
@@ -177,7 +177,7 @@ export function buildCreditPortabilityComparison(
   );
   const rows = plan.credits.map((credit) => {
     const outcomes = results.map((result) =>
-      outcomeForCredit(credit, result, dataset),
+      creditOutcomeForResult(credit, result, dataset),
     );
     return {
       credit,

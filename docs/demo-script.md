@@ -28,7 +28,7 @@ Open **Degree map**.
 
 Expand **First calculus requirement** and open its official source.
 
-## 60–78 seconds: opportunity simulator
+## 60–74 seconds: opportunity simulator
 
 Open **Opportunities**.
 
@@ -36,10 +36,14 @@ Open **Opportunities**.
 
 Change the hypothetical score below and back to the published minimum, then point to the three-step calculation trace.
 
-## 78–90 seconds: comparison and close
+## 74–84 seconds: comparison
 
 Open **Compare**.
 
 “The same inputs are rerun through two independently sourced Finance pathways. The portability matrix explains every row: AP Psychology is elective-only in the supported UF map but applies to FIU’s core, while the duplicate CLEP credit is suppressed at both.”
 
-Close with: “CreditMap turns scattered credit policies into one answer students can inspect, test, and act on.”
+## 84–90 seconds: counselor handoff and close
+
+Open **Plan brief**.
+
+“The result becomes a printable counselor handoff with every warning and dated source. CreditMap turns scattered policies into one answer students can inspect, test, and act on.”

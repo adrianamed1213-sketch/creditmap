@@ -24,6 +24,7 @@ Students often know they earned college credit without knowing which course it p
 - interactive opportunity simulator with score thresholds, before-and-after progress, duplicate warnings, and an auditable calculation trace;
 - verified UF–FIU comparison using the same student inputs, with three additional universities shown as an expansion roadmap;
 - credit-by-credit portability matrix showing university equivalents, degree use, duplicate handling, explanations, and official evidence;
+- counselor-ready plan brief that can be printed or saved as a PDF with outcomes, warnings, next steps, requirements, and dated sources;
 - transparent savings estimate and assumptions;
 - locally saved dashboard, plan name, recent changes, and settings;
 - methodology and read-only data workspace;
@@ -133,7 +134,7 @@ Run every check with:
 pnpm check
 ```
 
-The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, and credit portability outcomes.
+The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, credit portability outcomes, and plan-brief generation.
 
 ## Environment variables
 
@@ -178,6 +179,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 7. Open **Degree map** and expand a requirement.
 8. Open **Opportunities**, change a hypothetical score, and show the official equivalent, projected progress, and duplicate-safe calculation trace.
 9. Open **Compare** and trace AP Psychology across the UF–FIU portability matrix to show why the same credit can be elective at one university and degree-applicable at another.
+10. Open **Plan brief** to show the printable counselor handoff with warnings and dated evidence.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
 
@@ -191,6 +193,7 @@ Recommended release screenshots:
 - duplicate-credit warning;
 - opportunity simulator showing a before-and-after projection;
 - credit portability matrix on desktop and mobile.
+- printable plan brief preview.
 
 Final screenshots should be captured after the official academic dataset and deployed URL are ready.
 

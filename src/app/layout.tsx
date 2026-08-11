@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html data-scroll-behavior="smooth" lang="en">
       <body>
-        <a className="skip-link" href="#main-content">
+        <a className="print-hidden skip-link" href="#main-content">
           Skip to main content
         </a>
         <PlanProvider>
