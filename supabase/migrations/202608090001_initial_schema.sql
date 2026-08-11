@@ -3,7 +3,7 @@ create extension if not exists pgcrypto;
 create type public.verification_status as enum ('demo', 'unverified', 'in_review', 'verified', 'superseded');
 create type public.credit_source_type as enum ('AP', 'CLEP', 'DUAL', 'IB', 'AICE');
 create type public.credit_status as enum ('earned', 'expected');
-create type public.requirement_rule_type as enum ('specific_course', 'course_any', 'course_all', 'minimum_credits', 'manual_verification');
+create type public.requirement_rule_type as enum ('specific_course', 'course_any', 'course_all', 'alternative_course_groups', 'minimum_credits', 'manual_verification');
 
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,

@@ -60,7 +60,7 @@ The plan-brief service converts one explained result into a stable report model.
 
 **Why:** Academic data changes separately from calculation rules.
 
-**Where:** `src/data/verified-uf-data.ts` and `src/data/verified-fiu-data.ts` for the reviewed Finance pathways, `src/data/demo-data.ts` for composition and expansion fixtures, and `supabase/migrations` for production.
+**Where:** `src/data/verified-uf-data.ts`, `src/data/verified-fiu-data.ts`, and `src/data/verified-ucf-data.ts` for the reviewed Finance pathways, `src/data/demo-data.ts` for composition and expansion fixtures, and `supabase/migrations` for production.
 
 **Without the boundary:** Updating an academic year would require rewriting application behavior.
 
@@ -89,7 +89,7 @@ Student inputs, equivalencies, and degree requirements are source data. Degree-m
 3. The plan provider creates the updated typed snapshot.
 4. The equivalency resolver produces zero, one, or multiple course equivalents.
 5. Duplicate detection marks overlapping equivalent courses.
-6. The requirement allocator evaluates specific, OR, AND, and credit-count rules in deterministic priority order.
+6. The requirement allocator evaluates specific, OR, AND, alternative-group, and credit-count rules in deterministic priority order.
 7. A verified shared-course rule can display one course in overlapping university and major requirements while counting its credits only once.
 8. Unused accepted courses become elective-only credit.
 9. Progress is calculated from unique applicable credits.

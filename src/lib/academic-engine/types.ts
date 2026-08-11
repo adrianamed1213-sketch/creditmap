@@ -61,6 +61,7 @@ export type RequirementRule =
   | { type: "specific_course"; courseCode: string }
   | { type: "course_any"; courseCodes: string[]; requiredCount: number }
   | { type: "course_all"; courseCodes: string[] }
+  | { type: "alternative_course_groups"; courseGroups: string[][] }
   | { type: "minimum_credits"; courseCodes: string[]; requiredCredits: number }
   | { type: "manual_verification"; reason: string };
 

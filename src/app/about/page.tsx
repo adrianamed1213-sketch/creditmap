@@ -63,11 +63,11 @@ export default function AboutPage() {
 
         <section className="mt-10 rounded-3xl border border-[var(--mint-200)] bg-[var(--mint-50)] p-6 sm:p-8">
           <p className="text-xs font-bold tracking-[0.08em] text-[var(--brand-700)] uppercase">Verified planning pathways</p>
-          <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em] text-[var(--brand-950)]">A real UF–FIU Finance comparison</h2>
+          <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em] text-[var(--brand-950)]">Three independently sourced Finance pathways</h2>
           <p className="mt-3 max-w-3xl leading-7 text-[var(--text-muted)]">
-            CreditMap reviewed the live Finance requirements, exam-credit tables, and general-education structures for UF and FIU. FSU, UCF, USF, and tuition estimates remain outside the public numerical planning flow until their official records receive the same review.
+            CreditMap reviewed the Finance requirements, exam-credit rules, and general-education structures for UF, FIU, and UCF. FSU, USF, and tuition estimates remain outside the public numerical planning flow until their official records receive the same review.
           </p>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
             <article className="rounded-2xl border border-[var(--mint-200)] bg-white p-5">
               <h3 className="font-extrabold text-[var(--brand-950)]">University of Florida</h3>
               <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">Live Finance BSBA, exam-credit, and General Education sources checked August 9, 2026.</p>
@@ -83,6 +83,15 @@ export default function AboutPage() {
                 <a className="inline-flex items-center gap-1.5 hover:underline" href="https://catalog.fiu.edu/programs/FIN%3ABBA/requirements-uz47h" rel="noreferrer" target="_blank">Finance catalog<ExternalLink aria-hidden="true" className="size-3.5" /></a>
                 <a className="inline-flex items-center gap-1.5 hover:underline" href="https://transfer.fiu.edu/transfer-101/credit-options/credit-by-exam-tables/" rel="noreferrer" target="_blank">Exam credit<ExternalLink aria-hidden="true" className="size-3.5" /></a>
                 <a className="inline-flex items-center gap-1.5 hover:underline" href="https://catalog.fiu.edu/policiesandprocesses/program-graduation/undergraduate-requirements/universitycore" rel="noreferrer" target="_blank">2026 UCC<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+              </div>
+            </article>
+            <article className="rounded-2xl border border-[var(--mint-200)] bg-white p-5">
+              <h3 className="font-extrabold text-[var(--brand-950)]">University of Central Florida</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">Live Finance BSBA and business policies, 2026-2027 GEP, civic-literacy rules, and Florida&apos;s August 2026 exam-credit minimums checked August 10, 2026.</p>
+              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-bold text-[var(--brand-700)]">
+                <a className="inline-flex items-center gap-1.5 hover:underline" href="https://www.ucf.edu/degree/finance-bsba/" rel="noreferrer" target="_blank">Finance degree<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+                <a className="inline-flex items-center gap-1.5 hover:underline" href="https://undergrad.ucf.edu/wp-content/uploads/sites/7/2026/04/2026-2027-GEP-Worksheet.pdf" rel="noreferrer" target="_blank">2026-2027 GEP<ExternalLink aria-hidden="true" className="size-3.5" /></a>
+                <a className="inline-flex items-center gap-1.5 hover:underline" href="https://www.flbog.edu/wp-content/uploads/2026/06/ACC-Credit-by-Exam-Equivalencies-List.pdf" rel="noreferrer" target="_blank">State exam credit<ExternalLink aria-hidden="true" className="size-3.5" /></a>
               </div>
             </article>
           </div>

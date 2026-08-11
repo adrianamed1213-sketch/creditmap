@@ -21,9 +21,15 @@ import {
   fiuFinanceSource,
   fiuSources,
 } from "./verified-fiu-data";
+import {
+  ucfEquivalencies,
+  ucfFinanceProgram,
+  ucfFinanceSource,
+  ucfSources,
+} from "./verified-ucf-data";
 
 export const DEMO_NOTICE =
-  "UF and FIU Finance requirements and supported exam equivalencies were checked against official live sources. FSU, UCF, and USF remain on the expansion roadmap, and tuition estimates are withheld pending source verification. Confirm final decisions with the university or an academic adviser.";
+  "UF, FIU, and UCF Finance requirements and supported exam equivalencies were checked against official sources. FSU and USF remain on the expansion roadmap, and tuition estimates are withheld pending source verification. Confirm final decisions with the university or an academic adviser.";
 
 const demoSource: AcademicSource = {
   id: "creditmap-demo-source",
@@ -74,7 +80,7 @@ export const universities: University[] = [
     location: "Orlando, Florida",
     tuitionPerCredit: 212.28,
     tuitionAcademicYear: "Demo estimate",
-    sourceId: demoSource.id,
+    sourceId: ucfFinanceSource.id,
   },
   {
     id: "usf",
@@ -256,12 +262,14 @@ function buildProgram(university: University): Program {
 }
 
 const demoUniversities = universities.filter(
-  (university) => university.id !== "uf" && university.id !== "fiu",
+  (university) =>
+    university.id !== "uf" && university.id !== "fiu" && university.id !== "ucf",
 );
 
 export const programs = [
   ufFinanceProgram,
   fiuFinanceProgram,
+  ucfFinanceProgram,
   ...demoUniversities.map(buildProgram),
 ];
 
@@ -333,11 +341,12 @@ function buildEquivalencies(university: University): ExamEquivalency[] {
 export const equivalencies = [
   ...ufEquivalencies,
   ...fiuEquivalencies,
+  ...ucfEquivalencies,
   ...demoUniversities.flatMap(buildEquivalencies),
 ];
 
 export const academicDataset: AcademicDataset = {
-  sources: [demoSource, ...ufSources, ...fiuSources],
+  sources: [demoSource, ...ufSources, ...fiuSources, ...ucfSources],
   universities,
   programs,
   exams,

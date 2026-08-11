@@ -240,6 +240,97 @@ describe("allocation and plan changes", () => {
     expect(result.recommendations.every((item) => item.requirementId.length > 0)).toBe(true);
     expect(result.recommendations[0]?.reason).toContain("requirement");
   });
+
+  it("supports alternative groups with either one course or a paired sequence", () => {
+    const baseProgram = programForUniversity("fsu");
+    const alternativeProgram = {
+      ...baseProgram,
+      id: "fsu-alternative-groups-test",
+      requirements: [
+        {
+          id: "fsu-alternative-groups",
+          groupId: "test",
+          groupLabel: "Test",
+          title: "Single course or two-course sequence",
+          description: "Engine coverage for nested alternatives.",
+          credits: 3,
+          order: 1,
+          rule: {
+            type: "alternative_course_groups" as const,
+            courseGroups: [["FSU-D-PSYCH"], ["FSU-D-CALC1", "FSU-D-STATS"]],
+          },
+          verification: "demo" as const,
+          sourceId: baseProgram.sourceId,
+        },
+        {
+          id: "fsu-alternative-consumption-check",
+          groupId: "test",
+          groupLabel: "Test",
+          title: "Later overlapping choice",
+          description: "Confirms that a non-shared alternative consumes its match.",
+          credits: 3,
+          order: 2,
+          rule: {
+            type: "course_any" as const,
+            courseCodes: ["FSU-D-PSYCH"],
+            requiredCount: 1,
+          },
+          verification: "demo" as const,
+          sourceId: baseProgram.sourceId,
+        },
+      ],
+    };
+    const dataset = {
+      ...academicDataset,
+      programs: [
+        ...academicDataset.programs.filter((program) => program.universityId !== "fsu"),
+        alternativeProgram,
+      ],
+    };
+    const singleCourse = calculatePlan(
+      {
+        ...planWith([examCredit("psych", "ap-psychology", 4)], "fsu"),
+        programId: alternativeProgram.id,
+      },
+      dataset,
+    );
+    const pairedSequence = calculatePlan(
+      {
+        ...planWith(
+          [
+            examCredit("calc", "ap-calculus-ab", 4),
+            examCredit("stats", "aice-mathematics", 3),
+          ],
+          "fsu",
+        ),
+        programId: alternativeProgram.id,
+      },
+      dataset,
+    );
+    const bothGroups = calculatePlan(
+      {
+        ...planWith(
+          [
+            examCredit("psych-both", "ap-psychology", 4),
+            examCredit("calc-both", "ap-calculus-ab", 4),
+            examCredit("stats-both", "aice-mathematics", 3),
+          ],
+          "fsu",
+        ),
+        programId: alternativeProgram.id,
+      },
+      dataset,
+    );
+
+    expect(singleCourse.requirementResults[0]?.status).toBe("completed");
+    expect(singleCourse.requirementResults[1]?.status).toBe("remaining");
+    expect(pairedSequence.requirementResults[0]?.status).toBe("completed");
+    expect(pairedSequence.requirementResults[0]?.matchedCourses).toHaveLength(2);
+    expect(bothGroups.requirementResults[0]?.matchedCourses).toHaveLength(1);
+    expect(bothGroups.requirementResults[0]?.matchedCourses[0]?.courseCode).toBe(
+      "FSU-D-PSYCH",
+    );
+  });
 });
 
 describe("FIU verified Finance pathway", () => {
@@ -311,6 +402,123 @@ describe("FIU verified Finance pathway", () => {
 
     expect(recommendation?.verification).toBe("verified");
     expect(recommendation?.reason).toContain("published FIU equivalency");
+  });
+});
+
+describe("UCF verified Finance pathway", () => {
+  it("resolves the statewide AP English score band into the UCF communication sequence", () => {
+    const result = calculatePlan(
+      planWith([examCredit("ucf-english", "ap-english-language", 4)], "ucf"),
+      academicDataset,
+    );
+
+    expect(result.program.id).toBe("ucf-finance-bsba-2026-27");
+    expect(result.resolvedCredits[0]?.courses.map((course) => course.courseCode)).toEqual([
+      "ENC 1101",
+      "ENC 1102",
+    ]);
+    expect(result.resolvedCredits[0]?.verification).toBe("verified");
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "ucf-gep-communication",
+      )?.status,
+    ).toBe("completed");
+    expect(result.applicableCredits).toBe(6);
+  });
+
+  it("shows UCF economics courses in GEP and pre-major requirements without double counting", () => {
+    const result = calculatePlan(
+      planWith(
+        [
+          examCredit("ucf-macro", "ap-macroeconomics", 3),
+          examCredit("ucf-micro", "ap-microeconomics", 3),
+        ],
+        "ucf",
+      ),
+      academicDataset,
+    );
+
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "ucf-common-prerequisite-eco-2013",
+      )?.status,
+    ).toBe("completed");
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "ucf-common-prerequisite-eco-2023",
+      )?.status,
+    ).toBe("completed");
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "ucf-gep-social-sciences",
+      )?.status,
+    ).toBe("completed");
+    expect(result.applicableCredits).toBe(6);
+  });
+
+  it("completes UCF's published statistics-plus-calculus waiver path", () => {
+    const result = calculatePlan(
+      planWith(
+        [
+          examCredit("ucf-stats", "ap-statistics", 3),
+          examCredit("ucf-calculus", "clep-calculus", 50),
+        ],
+        "ucf",
+      ),
+      academicDataset,
+    );
+    const quantitative = result.requirementResults.find(
+      (item) => item.requirement.id === "ucf-common-prerequisite-quantitative-path",
+    );
+
+    expect(quantitative?.status).toBe("completed");
+    expect(quantitative?.matchedCourses.map((course) => course.courseCode)).toEqual([
+      "STA 2023",
+      "MAC 2233",
+    ]);
+    expect(result.applicableCredits).toBe(6);
+  });
+
+  it("applies UCF's civic pathway and suppresses duplicate government credit", () => {
+    const result = calculatePlan(
+      planWith(
+        [
+          examCredit("ucf-ap-gov", "ap-us-government", 3),
+          examCredit("ucf-clep-gov", "clep-government", 50),
+        ],
+        "ucf",
+      ),
+      academicDataset,
+    );
+
+    expect(
+      result.requirementResults.find(
+        (item) => item.requirement.id === "ucf-civic-literacy-course",
+      )?.status,
+    ).toBe("completed");
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.duplicateCredits).toBe(3);
+  });
+
+  it("keeps statewide CLEP Sociology as elective-only under the 2026-2027 GEP", () => {
+    const result = calculatePlan(
+      planWith([examCredit("ucf-soc", "clep-sociology", 50)], "ucf"),
+      academicDataset,
+    );
+
+    expect(result.acceptedCredits).toBe(3);
+    expect(result.applicableCredits).toBe(0);
+    expect(result.electiveCredits).toBe(3);
+  });
+
+  it("labels UCF recommendations with the published institution", () => {
+    const result = calculatePlan(planWith([], "ucf"), academicDataset);
+    const recommendation = result.recommendations.find(
+      (item) => item.exam.id === "clep-college-composition",
+    );
+
+    expect(recommendation?.verification).toBe("verified");
+    expect(recommendation?.reason).toContain("published UCF equivalency");
   });
 });
 

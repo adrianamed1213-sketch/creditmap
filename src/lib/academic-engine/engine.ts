@@ -76,6 +76,9 @@ function supportedCourseCodes(program: Program, dataset: AcademicDataset) {
     if (rule.type === "course_any" || rule.type === "course_all" || rule.type === "minimum_credits") {
       rule.courseCodes.forEach((code) => codes.add(normalizeCourseCode(code)));
     }
+    if (rule.type === "alternative_course_groups") {
+      rule.courseGroups.flat().forEach((code) => codes.add(normalizeCourseCode(code)));
+    }
   }
   dataset.equivalencies
     .filter((equivalency) => equivalency.universityId === program.universityId)
@@ -189,6 +192,7 @@ function requirementPriority(requirement: DegreeRequirement) {
   const priorities = {
     specific_course: 1,
     course_all: 2,
+    alternative_course_groups: 2,
     course_any: 3,
     minimum_credits: 4,
     manual_verification: 5,
@@ -244,6 +248,36 @@ function evaluateRequirement(
       .map((code) => candidates.find((course) => normalizeCourseCode(course.courseCode) === normalizeCourseCode(code)))
       .filter((course): course is ResolvedCourse => Boolean(course));
     complete = matched.length === rule.courseCodes.length;
+  }
+
+  if (rule.type === "alternative_course_groups") {
+    const alternatives = rule.courseGroups.map((courseCodes, index) => {
+      const candidates = byCodes(courseCodes);
+      const courses = courseCodes
+        .map((code) =>
+          candidates.find(
+            (course) =>
+              normalizeCourseCode(course.courseCode) === normalizeCourseCode(code),
+          ),
+        )
+        .filter((course): course is ResolvedCourse => Boolean(course));
+      return {
+        index,
+        courses,
+        complete: courses.length === courseCodes.length,
+        credits: courses.reduce((total, course) => total + course.credits, 0),
+      };
+    });
+    const selected =
+      alternatives.find((alternative) => alternative.complete) ??
+      alternatives.sort(
+        (a, b) =>
+          b.courses.length - a.courses.length ||
+          b.credits - a.credits ||
+          a.index - b.index,
+      )[0];
+    matched = selected?.courses ?? [];
+    complete = selected?.complete ?? false;
   }
 
   if (rule.type === "minimum_credits") {
@@ -323,6 +357,15 @@ function neededCourseCodes(result: RequirementResult) {
   if (rule.type === "course_any") return matched.size >= rule.requiredCount ? [] : rule.courseCodes;
   if (rule.type === "course_all") {
     return rule.courseCodes.filter((code) => !matched.has(normalizeCourseCode(code)));
+  }
+  if (rule.type === "alternative_course_groups") {
+    return [
+      ...new Set(
+        rule.courseGroups.flatMap((group) =>
+          group.filter((code) => !matched.has(normalizeCourseCode(code))),
+        ),
+      ),
+    ];
   }
   if (rule.type === "minimum_credits") return rule.courseCodes;
   return [];

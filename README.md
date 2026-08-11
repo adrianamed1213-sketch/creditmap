@@ -16,13 +16,13 @@ Students often know they earned college credit without knowing which course it p
 - searchable exam autocomplete and score validation;
 - immediate score, deletion, university, and plan recalculation;
 - deterministic exam-equivalency resolution;
-- specific-course, OR, AND, and minimum-credit requirement rules;
+- specific-course, OR, AND, alternative-group, and minimum-credit requirement rules;
 - duplicate-course suppression;
 - applicable, elective-only, and verification-required classification;
 - visual degree progress grouped by requirement type;
 - explainable recommendations tied to remaining requirements;
 - interactive opportunity simulator with score thresholds, before-and-after progress, duplicate warnings, and an auditable calculation trace;
-- verified UF–FIU comparison using the same student inputs, with three additional universities shown as an expansion roadmap;
+- verified UF–FIU–UCF comparison using the same student inputs, with two additional universities shown as an expansion roadmap;
 - credit-by-credit portability matrix showing university equivalents, degree use, duplicate handling, explanations, and official evidence;
 - counselor-ready plan brief that can be printed or saved as a PDF with outcomes, warnings, next steps, requirements, and dated sources;
 - transparent savings estimate and assumptions;
@@ -34,9 +34,9 @@ Students often know they earned college credit without knowing which course it p
 
 ## Academic-data status
 
-The University of Florida Finance BSBA requirements and supported UF AP/CLEP equivalencies were checked against live official UF catalog sources on August 9, 2026. The Florida International University Finance BBA, business curriculum, 2026 University Core Curriculum, and supported AP/CLEP equivalencies were checked against official FIU sources on August 10, 2026. Each record retains its source URL, checked date, and verification status.
+The University of Florida Finance BSBA requirements and supported UF AP/CLEP equivalencies were checked against live official UF catalog sources on August 9, 2026. The Florida International University Finance BBA, business curriculum, 2026 University Core Curriculum, and supported AP/CLEP equivalencies were checked against official FIU sources on August 10, 2026. The University of Central Florida Finance BSBA, business curriculum, 2026-2027 General Education Program, civic-literacy rules, and Florida's August 2026 statewide minimum AP/CLEP awards were checked against official UCF and state sources on August 10, 2026. Each record retains its source URL, checked date, and verification status.
 
-FSU, UCF, and USF remain expansion fixtures and are excluded from the public planning and numerical comparison flow. Tuition estimates are withheld until their rates and assumptions are verified. Unknown or manually entered transfer inputs return **Verification required** instead of being guessed. See the [verified UF source record](docs/verified-uf-sources.md) and [verified FIU source record](docs/verified-fiu-sources.md).
+FSU and USF remain expansion fixtures and are excluded from the public planning and numerical comparison flow. Tuition estimates are withheld until their rates and assumptions are verified. Unknown or manually entered transfer inputs return **Verification required** instead of being guessed. See the [verified UF source record](docs/verified-uf-sources.md), [verified FIU source record](docs/verified-fiu-sources.md), and [verified UCF source record](docs/verified-ucf-sources.md).
 
 ## Technology stack
 
@@ -78,6 +78,7 @@ src/
 ├── components/                  reusable product and interface components
 ├── data/demo-data.ts            composition and labeled expansion fixtures
 ├── data/verified-fiu-data.ts    reviewed FIU Finance and exam-credit records
+├── data/verified-ucf-data.ts    reviewed UCF Finance and statewide exam-credit records
 ├── features/plans/              local plan persistence and mutations
 └── lib/
     ├── academic-engine/         deterministic rules and tests
@@ -134,7 +135,7 @@ Run every check with:
 pnpm check
 ```
 
-The test suite covers score thresholds, score changes, specific/OR/AND/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, credit portability outcomes, and plan-brief generation.
+The test suite covers score thresholds, score changes, specific/OR/AND/alternative-group/credit-count requirements, expected credit, duplicates, electives, deletions, university changes, progress, recommendations, opportunity projections, credit portability outcomes, and plan-brief generation.
 
 ## Environment variables
 
@@ -166,7 +167,7 @@ Source priority:
 4. Florida state education sources;
 5. College Board, CLEP, IB, or Cambridge official sources.
 
-Each official record retains its URL, publisher, catalog-year label, date checked, verification status, and notes. See [academic-data methodology](docs/data-methodology.md) and the [verified UF source record](docs/verified-uf-sources.md).
+Each official record retains its URL, publisher, catalog-year label, date checked, verification status, and notes. See [academic-data methodology](docs/data-methodology.md) and the reviewed [UF](docs/verified-uf-sources.md), [FIU](docs/verified-fiu-sources.md), and [UCF](docs/verified-ucf-sources.md) source records.
 
 ## Competition demo path
 
@@ -178,7 +179,7 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 6. Change a score to demonstrate live recalculation, then restore it.
 7. Open **Degree map** and expand a requirement.
 8. Open **Opportunities**, change a hypothetical score, and show the official equivalent, projected progress, and duplicate-safe calculation trace.
-9. Open **Compare** and trace AP Psychology across the UF–FIU portability matrix to show why the same credit can be elective at one university and degree-applicable at another.
+9. Open **Compare** and trace AP Psychology across the UF–FIU–UCF portability matrix to show why the same credit can be elective at one university and degree-applicable at another.
 10. Open **Plan brief** to show the printable counselor handoff with warnings and dated evidence.
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
@@ -199,7 +200,7 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Current limitations
 
-- only the supported UF and FIU Finance and exam-credit records are verified; three expansion universities are not yet available for numerical planning;
+- only the supported UF, FIU, and UCF Finance and exam-credit records are verified; two expansion universities are not yet available for numerical planning;
 - manual transfer review, Gen Ed category placement, grade/GPA checks, restricted electives, and career-readiness phases remain verification-required;
 - tuition savings are withheld until rates and assumptions are verified;
 - local demo plans are stored in one browser, not synchronized between devices;
@@ -209,7 +210,7 @@ Final screenshots should be captured after the official academic dataset and dep
 
 ## Future improvements
 
-- add verified programs at FSU, UCF, and USF;
+- add verified programs at FSU and USF;
 - add archived UF catalog years and matriculation-year selection;
 - enable Supabase saved-plan synchronization;
 - add catalog-year selection and archived policies;

@@ -40,7 +40,7 @@ Change the hypothetical score below and back to the published minimum, then poin
 
 Open **Compare**.
 
-“The same inputs are rerun through two independently sourced Finance pathways. The portability matrix explains every row: AP Psychology is elective-only in the supported UF map but applies to FIU’s core, while the duplicate CLEP credit is suppressed at both.”
+“The same inputs are rerun through three independently sourced Finance pathways. The portability matrix explains every row: AP Psychology is elective-only in the supported UF map but applies to FIU and UCF general education, while the duplicate CLEP credit is suppressed everywhere.”
 
 ## 84–90 seconds: counselor handoff and close
 

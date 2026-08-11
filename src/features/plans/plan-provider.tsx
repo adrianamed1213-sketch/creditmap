@@ -41,7 +41,21 @@ function freshDemoPlan(): StudentPlan {
 
 function migrateSavedPlan(saved: StudentPlan): StudentPlan {
   if (verifiedUniversities.some((university) => university.id === saved.universityId)) {
-    return saved;
+    const currentProgram = programForUniversity(saved.universityId);
+    if (saved.programId === currentProgram.id) return saved;
+
+    return {
+      ...saved,
+      programId: currentProgram.id,
+      recentChanges: [
+        {
+          id: `change-current-program-${saved.updatedAt}`,
+          description: `Updated this plan to the current verified ${currentProgram.name} pathway`,
+          createdAt: saved.updatedAt,
+        },
+        ...saved.recentChanges,
+      ].slice(0, 8),
+    };
   }
 
   const fallbackProgram = programForUniversity("uf");

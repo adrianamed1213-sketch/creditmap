@@ -31,10 +31,10 @@ export default function ComparePage() {
     <>
       <DemoBanner />
       <section className="page-shell py-10 sm:py-14">
-        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="Compare the totals, then trace every credit through UF and FIU using reviewed official Finance and exam-credit records." />
+        <PageHeading eyebrow="College comparison" title="Same credits, different maps" description="Compare the totals, then trace every credit through UF, FIU, and UCF using reviewed official Finance and exam-credit records." />
         <div className="mt-6 flex gap-3 rounded-2xl border border-[var(--line)] bg-white p-4"><Info aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-[var(--brand-700)]" /><p className="text-sm leading-6 text-[var(--text-muted)]">Comparison keeps your {plan.credits.length} credit inputs unchanged and reruns the engine for each university. A manually entered university-specific course may require verification elsewhere.</p></div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {comparisons.map((comparison) => {
             const source = academicDataset.sources.find(
               (item) => item.id === comparison.program.sourceId,

@@ -52,11 +52,11 @@ export default function StartPage() {
               <span className="grid size-9 place-items-center rounded-xl bg-[var(--brand-900)] text-sm font-bold text-white">1</span>
               <div>
                 <h2 className="font-bold text-[var(--brand-950)]">Choose your university</h2>
-                <p className="text-sm text-[var(--text-muted)]">UF and FIU use reviewed official Finance and exam-credit sources.</p>
+                <p className="text-sm text-[var(--text-muted)]">UF, FIU, and UCF use reviewed official Finance and exam-credit sources.</p>
               </div>
             </div>
 
-            <fieldset className="mt-6 grid gap-3 sm:grid-cols-2">
+            <fieldset className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <legend className="sr-only">University</legend>
               {verifiedUniversities.map((university) => (
                 <label

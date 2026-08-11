@@ -37,12 +37,12 @@ describe("credit portability comparison", () => {
       academicDataset,
     );
 
-    expect(comparison.results).toHaveLength(2);
+    expect(comparison.results).toHaveLength(3);
     expect(comparison.rows).toHaveLength(samplePlan.credits.length);
-    expect(comparison.rows.every((row) => row.outcomes.length === 2)).toBe(true);
+    expect(comparison.rows.every((row) => row.outcomes.length === 3)).toBe(true);
   });
 
-  it("reveals when one course is elective at UF but applicable at FIU", () => {
+  it("reveals when one course is elective at UF but applicable at FIU and UCF", () => {
     const comparison = buildCreditPortabilityComparison(
       { ...samplePlan, credits: [examCredit("psych", "ap-psychology", 4)] },
       targets,
@@ -56,10 +56,13 @@ describe("credit portability comparison", () => {
     expect(row.outcomes.find((item) => item.universityId === "fiu")?.status).toBe(
       "applicable",
     );
+    expect(row.outcomes.find((item) => item.universityId === "ucf")?.status).toBe(
+      "applicable",
+    );
     expect(row.variesByUniversity).toBe(true);
   });
 
-  it("shows duplicate suppression independently for both universities", () => {
+  it("shows duplicate suppression independently for every university", () => {
     const comparison = buildCreditPortabilityComparison(
       {
         ...samplePlan,
@@ -107,7 +110,7 @@ describe("credit portability comparison", () => {
     );
     const row = comparison.rows[0]!;
 
-    expect(row.outcomes.map((outcome) => outcome.acceptedCredits).sort()).toEqual([3, 4]);
+    expect(row.outcomes.map((outcome) => outcome.acceptedCredits).sort()).toEqual([3, 3, 4]);
     expect(row.variesByUniversity).toBe(true);
   });
 
