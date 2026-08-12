@@ -185,6 +185,8 @@ Each official record retains its URL, publisher, catalog-year label, date checke
 
 See [competition demo script](docs/demo-script.md) for a narrated 60–90 second version.
 
+The [competition submission packet](docs/competition-submission.md) contains the judge-facing pitch, 2:40 video script, likely application-answer framework, required AI-disclosure reminder, technical rehearsal, and final submission checklist. The public app also includes a dedicated judge overview at `/competition`.
+
 ## Screenshots
 
 Recommended release screenshots:

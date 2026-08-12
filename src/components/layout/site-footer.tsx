@@ -12,6 +12,9 @@ export function SiteFooter() {
           <p className="text-sm leading-6 text-[var(--text-muted)]">{product.disclaimer}</p>
         </div>
         <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-[var(--text-muted)]" aria-label="Footer">
+          <Link className="hover:text-[var(--brand-900)]" href="/competition">
+            Competition entry
+          </Link>
           <Link className="hover:text-[var(--brand-900)]" href="/about">
             About &amp; methodology
           </Link>

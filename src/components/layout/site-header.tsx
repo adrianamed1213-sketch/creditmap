@@ -11,6 +11,7 @@ const navigation = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/plan/demo-plan/map", label: "Degree map" },
   { href: "/compare", label: "Compare" },
+  { href: "/competition", label: "Competition" },
   { href: "/about", label: "Methodology" },
 ] as const;
 
