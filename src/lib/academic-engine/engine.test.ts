@@ -155,6 +155,7 @@ describe("requirement matching", () => {
 
 describe("allocation and plan changes", () => {
   it("suppresses duplicate course credit", () => {
+    expect(result.resolvedCredits[1]?.note).toContain("not counted again");
     const result = calculatePlan(
       planWith([
         examCredit("ap-psych", "ap-psychology", 4),

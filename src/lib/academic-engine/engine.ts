@@ -180,7 +180,7 @@ export function resolveCredits(
       acceptedCredits,
       duplicateOfCreditId: firstDuplicate,
       note: firstDuplicate
-        ? `${resolved.note} It overlaps another credit and is not counted twice.`
+        ? `${resolved.note} This credit awards the same course as another credit, so its credits are not counted again.`
         : resolved.note,
     });
   });
