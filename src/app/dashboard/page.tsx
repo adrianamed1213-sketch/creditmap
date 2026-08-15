@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BookPlus, CheckCircle2, Clock3, FileText, GitCompareArrows, GraduationCap, Lightbulb, Map, Shapes } from "lucide-react";
+import { ArrowRight, BookPlus, CheckCircle2, Clock3, FileText, GitCompareArrows, GraduationCap, Lightbulb, Map, Shapes, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 
 import { DemoBanner } from "@/components/app/demo-banner";
@@ -11,6 +11,12 @@ import { usePlan } from "@/features/plans/plan-provider";
 
 export default function DashboardPage() {
   const { plan, result } = usePlan();
+  const verificationDetail =
+  result.verificationRequiredInputs === 0
+    ? "No entered records need official review"
+    : result.verificationRequiredCourseCredits > 0
+      ? `${result.verificationRequiredCourseCredits} student-reported course credits; official award unknown`
+      : "Official review is needed before credit can be estimated";
 
   return (
     <>
@@ -37,11 +43,17 @@ export default function DashboardPage() {
           </section>
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           <MetricCard detail="All entered credits before resolution" icon={GraduationCap} label="Credits entered" value={plan.credits.length} />
           <MetricCard detail="Unique accepted course credits" icon={CheckCircle2} label="Accepted credits" value={result.acceptedCredits} />
           <MetricCard detail="Connected to modeled requirements" icon={Map} label="Applicable credits" value={result.applicableCredits} />
           <MetricCard detail="Accepted but not currently allocated" icon={Shapes} label="Elective credits" value={result.electiveCredits} />
+          <MetricCard
+  detail={verificationDetail}
+  icon={ShieldAlert}
+  label="Needs verification"
+  value={result.verificationRequiredInputs}
+/>
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-[1fr_0.8fr]">

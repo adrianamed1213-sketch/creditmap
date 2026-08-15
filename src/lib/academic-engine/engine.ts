@@ -474,6 +474,17 @@ export function calculatePlan(plan: StudentPlan, dataset: AcademicDataset): Plan
     .flatMap((resolved) => resolved.courses)
     .filter((course) => course.duplicateOfCreditId)
     .reduce((total, course) => total + course.credits, 0);
+    const verificationRequiredResults = resolvedCredits.filter(
+  (resolved) => resolved.verification === "verification_required",
+);
+const verificationRequiredInputs = verificationRequiredResults.length;
+const verificationRequiredCourseCredits = verificationRequiredResults.reduce(
+  (total, resolved) =>
+    resolved.credit.kind === "course"
+      ? total + resolved.credit.credits
+      : total,
+  0,
+);
   const recommendations = generateRecommendations(
     plan,
     evaluation.results,
@@ -492,6 +503,8 @@ export function calculatePlan(plan: StudentPlan, dataset: AcademicDataset): Plan
     applicableCredits,
     electiveCredits,
     duplicateCredits,
+    verificationRequiredInputs,
+verificationRequiredCourseCredits,
     progressPercent: Math.min(100, Math.round((applicableCredits / program.totalCredits) * 100)),
     completedRequirements: evaluation.results.filter((result) => result.status === "completed").length,
     totalRequirements: evaluation.results.length,

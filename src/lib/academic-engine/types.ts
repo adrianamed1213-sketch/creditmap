@@ -13,7 +13,7 @@ export type RequirementStatus =
 export type AcademicSource = {
   id: string;
   title: string;
-  url: string;
+  url: string;  
   academicYear: string;
   checkedAt: string;
   notes: string;
@@ -177,6 +177,8 @@ export type PlanResult = {
   applicableCredits: number;
   electiveCredits: number;
   duplicateCredits: number;
+  verificationRequiredInputs: number;
+verificationRequiredCourseCredits: number;
   progressPercent: number;
   completedRequirements: number;
   totalRequirements: number;

@@ -188,6 +188,8 @@ describe("allocation and plan changes", () => {
     );
     expect(result.acceptedCredits).toBe(0);
     expect(result.resolvedCredits[0]?.verification).toBe("verification_required");
+    expect(result.verificationRequiredInputs).toBe(1);
+expect(result.verificationRequiredCourseCredits).toBe(3);
   });
 
   it("classifies unused accepted credit as elective credit", () => {
